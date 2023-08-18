@@ -19,6 +19,7 @@
           <div class="dropdown-menu dropdown-menu-end">
             <NuxtLink class="dropdown-item cursor-pointer" to="/profile">Profile</NuxtLink>
             <span class="dropdown-item cursor-pointer" data-bs-toggle="modal" data-bs-target="#chatSettingsModal">Settings</span>
+            <a class="dropdown-item cursor-pointer" href="https://id.basebook.xyz" target="_blank">Basebook ID <i class="bi bi-box-arrow-up-right ms-1"></i></a>
             <span class="dropdown-item cursor-pointer" @click="disconnectWallet">Disconnect</span>
           </div>
         </li>
