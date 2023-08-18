@@ -1,0 +1,27 @@
+{
+  "name": "basebook",
+  "private": true,
+  "scripts": {
+    "build": "nuxt build",
+    "dev": "nuxt dev",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview"
+  },
+  "dependencies": {
+    "@orbisclub/orbis-sdk": "^0.4.66",
+    "@pinia/nuxt": "^0.4.6",
+    "@vueuse/core": "^9.2.0",
+    "@vueuse/nuxt": "^9.2.0",
+    "ethers": "^5.7.2",
+    "@esbuild-plugins/node-globals-polyfill": "^0.2.3",
+    "@esbuild-plugins/node-modules-polyfill": "^0.2.2",
+    "nuxt": "3.2.0",
+    "pinia": "^2.0.28",
+    "sanitize-html": "^2.7.2",
+    "vue-dapp": "^0.6.2",
+    "vue-toastification": "^2.0.0-rc.5"
+  },
+  "devDependencies": {
+    
+  }
+}
