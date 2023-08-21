@@ -37,7 +37,7 @@
       <div class="modal-footer">
         <button type="button" class="btn btn-primary" @click="swap" :disabled="waiting">
           <span v-if="waiting" class="spinner-border spinner-border-sm mx-1" role="status" aria-hidden="true"></span>
-          Swap tokens
+          Buy {{ outputToken?.symbol }}
         </button>
       </div>
 

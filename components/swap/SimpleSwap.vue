@@ -88,7 +88,7 @@
       v-if="outputTokenAmount && !bothTokensAreNativeCoinOrWrappedTokenOrSame"
     >
       <em>
-        You will get at least {{ outputTokenAmount }} {{ outputToken.symbol }}, but probably more 
+        You will get at least {{ outputTokenAmount }} {{ outputToken.symbol }} ({{ outputToken.name }}), but probably more 
         ({{ siteStore.getSlippage }}% slippage).
       </em>
     </small>
@@ -106,7 +106,7 @@
         class="btn btn-outline-primary" 
         type="button"
       >
-        Swap tokens
+        Buy {{ outputToken?.symbol }}
       </button>
 
       <!-- Approve token button -->
@@ -139,7 +139,7 @@
         :data-bs-target="'#swapTokensModal'+swapId"
         @click="getOutputAmount"
       >
-        Swap tokens
+      Buy {{ outputToken?.symbol }}
       </button>
 
       <!-- Swap tokens modal -->
@@ -185,6 +185,12 @@
       </button>
 
     </div>
+
+    <p class="text-center mt-5">
+      <small>
+        <em>Powered by Velocimeter.</em>
+      </small>
+    </p>
 
   </div>
 </template>
