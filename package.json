@@ -12,6 +12,7 @@
     "@pinia/nuxt": "^0.4.6",
     "@vueuse/core": "^9.2.0",
     "@vueuse/nuxt": "^9.2.0",
+    "emoji-mart-vue-fast": "^15.0.0",
     "ethers": "^5.7.2",
     "@esbuild-plugins/node-globals-polyfill": "^0.2.3",
     "@esbuild-plugins/node-modules-polyfill": "^0.2.2",
