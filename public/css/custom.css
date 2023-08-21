@@ -401,6 +401,16 @@ a:hover {
 
 */
 
+/* EmojiPicker.vue + <Picker class="emoji-mart-category" */
+.emoji-mart-category {
+  color: #0f1110;
+}
+
+.emoji-mart-static .emoji-mart-category-label, .emoji-mart-static .emoji-mart-category-label h3 {
+  background-color: #222529;
+  color: #ffffff;
+}
+
 .w-30 {
   width: 30%;
 }

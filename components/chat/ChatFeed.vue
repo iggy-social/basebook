@@ -1,5 +1,6 @@
 <template>
   <div class="scroll-500">
+
     <div class="card mb-3 border" v-if="!hideCommentBox">
       <div class="card-body">
         <div class="form-group mt-2 mb-2">
@@ -33,6 +34,13 @@
               buttonText="IMG"
               cls="btn btn-outline-primary me-2 mt-2"
             />
+
+            <!-- Emoji Picker -->
+            <EmojiPicker  
+              v-if="isActivated && userStore.getIsConnectedToOrbis && isSupportedChain && hasDomainOrNotRequired"
+              @updateEmoji="insertEmoji"
+            />
+
           </div>
           
           <div>
@@ -99,6 +107,9 @@ import TenorGifSearch from "~/components/tenor/TenorGifSearch.vue";
 import TenorStickerSearch from "~/components/tenor/TenorStickerSearch.vue";
 import Web3StorageImageUpload from "~/components/storage/Web3StorageImageUpload.vue";
 
+import EmojiPicker from '~/components/EmojiPicker.vue'
+import 'emoji-mart-vue-fast/css/emoji-mart.css'
+
 export default {
   name: "ChatFeed",
   props: [
@@ -115,7 +126,8 @@ export default {
     SwitchChainButton,
     TenorGifSearch,
     TenorStickerSearch,
-    Web3StorageImageUpload
+    Web3StorageImageUpload,
+    EmojiPicker,
   },
 
   data() {
@@ -188,6 +200,16 @@ export default {
   },
 
   methods: {
+    insertEmoji(emoji) {
+  if (!this.postText) {
+    this.postText = emoji;
+  } else {
+    this.postText += emoji;
+  }
+},
+
+
+
     async checkConnectionToOrbis() {
       const isConn = await this.$orbis.isConnected();
       this.userStore.setIsConnectedToOrbis(isConn);
