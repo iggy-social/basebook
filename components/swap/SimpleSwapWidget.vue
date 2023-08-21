@@ -1,6 +1,6 @@
 <template>
 <div class="card m-2 bg-light">
-  <div class="card-header bg-light">Swap tokens</div>
+  <div class="card-header bg-light">Swap tokens (via Velocimeter)</div>
 
   <div class="card-body sidebar-card-body">
 
