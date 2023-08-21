@@ -1,6 +1,6 @@
 <template>
   <button data-bs-toggle="modal" data-bs-target="#emojiModal" class="btn btn-outline-primary me-2 mt-2">
-    <i class="bi bi-emoji-smile"></i>
+    <i class="bi bi-emoji-smile-fill"></i>
   </button>
 
   <div class="modal fade" id="emojiModal" tabindex="-1" aria-labelledby="emojiModalLabel" aria-hidden="true">
@@ -15,8 +15,9 @@
             :data="emojiIndex"
             set="apple"
             title="Pick an emoji"
+            emoji="point_up"
             @select="handleEmojiSelect"
-            class="emoji-mart-category"
+            class="emoji-mart-category mx-auto"
             :style="{ backgroundColor: '#222529', color: '#FFFFFF' }"
           />
         </div>
@@ -29,7 +30,7 @@
 import { EmojiIndex } from 'emoji-mart-vue-fast/src/utils/emoji-data'
 import EmojiMartPicker from 'emoji-mart-vue-fast/src/components/Picker'
 
-import data from 'emoji-mart-vue-fast/data/all.json'
+import data from 'emoji-mart-vue-fast/data/apple.json'
 
 export default {
   name: 'EmojiPickerWithModal',

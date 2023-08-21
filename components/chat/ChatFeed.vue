@@ -9,7 +9,7 @@
             :disabled="!userStore.getIsConnectedToOrbis || !isSupportedChain || !hasDomainOrNotRequired" 
             class="form-control" id="exampleTextarea" rows="5" 
             :placeholder="createPostPlaceholder"
-          >{{ emojiText }}</textarea>
+          ></textarea>
         </div>
 
         <div class="d-flex justify-content-between">
