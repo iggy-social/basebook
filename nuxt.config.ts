@@ -87,7 +87,7 @@ export default defineNuxtConfig({
       punkNumberOfPrices: 5, // number of different prices (based on domain length), usually 1 (price()) or 5 (price1char() - price5char())
       punkTldAddress: "0x4087fb91a1fbdef05761c02714335d232a2bf3a1", // punk domain TLD address
       randomPostsNumber: 1, // number of random post NFTs to show in the sidebar widget
-      rpcCustom: process.env.RPC_CUSTOM || "https://base-mainnet.public.blastapi.io", // Custom RPC URL
+      rpcCustom: process.env.RPC_CUSTOM || "https://mainnet.base.org", // Custom RPC URL
       showRepliesOnHomepage: true, // show replies on the homepage     
       stakingContractAddress: "", // this is also the stake/gov token address
       stakeTokenSymbol: "", // stake token symbol (governance token symbol)

@@ -125,6 +125,7 @@ import NavbarMobile from "~/components/navbars/NavbarMobile.vue";
 import SidebarLeft from "~/components/sidebars/SidebarLeft.vue";
 import SidebarRight from "~/components/sidebars/SidebarRight.vue";
 import ChatSettingsModal from "~/components/ChatSettingsModal.vue";
+import { getDomainName } from '~/utils/domainUtils';
 
 export default {
   data() {
@@ -204,6 +205,8 @@ export default {
   },
 
   methods: {
+    getDomainName,
+
     async connectCoinbase() {
 			await this.connectWith(this.coinbaseConnector);
 			localStorage.setItem("connected", "coinbase"); // store in local storage to autoconnect next time
@@ -298,10 +301,13 @@ export default {
 
     async fetchUserDomain() {
       if (this.chainId === this.$config.supportedChainId) {
-        const contract = new ethers.Contract(resolvers[this.chainId], ResolverAbi, this.signer);
-
-        // get user's default domain
-        const userDomain = await contract.getDefaultDomain(this.address, this.$config.tldName);
+        let userDomain;
+        
+        if (this.signer) {
+          userDomain = await this.getDomainName(this.address, this.signer);
+        } else {
+          userDomain = await this.getDomainName(this.address);
+        }
 
         if (userDomain) {
           this.userStore.setDefaultDomain(userDomain+this.$config.tldName);

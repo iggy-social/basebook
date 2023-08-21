@@ -39,6 +39,7 @@
 <script>
 import { shortenAddress } from 'vue-dapp';
 import ProfileImage from '../profile/ProfileImage.vue';
+import { getDomainName } from '~/utils/domainUtils';
 
 export default {
   name: 'OrbisNotification',
@@ -74,6 +75,8 @@ export default {
       if (!this.authorImage && this.notification["user_notifiying_details"]?.profile?.pfp) {
         this.authorImage = this.notification["user_notifiying_details"]["profile"]["pfp"];
       }
+
+      this.fetchUserDomain();
     }
   },
 
@@ -128,25 +131,32 @@ export default {
 
     getUsernameOrShortAddress() {
       if (this.notification) {
-        if (this.notification["user_notifiying_details"]?.profile?.username) {
-          this.authorDomain = this.notification["user_notifiying_details"]["profile"]["username"];
+        this.authorAddress = this.notification["user_notifiying_details"]["did"].split(":")[4];
+
+        // get username from session storage
+        this.authorDomain = sessionStorage.getItem(String(this.authorAddress).toLowerCase());
+
+        if (this.authorDomain) {
           return this.authorDomain;
         } else {
-          this.authorAddress = this.notification["user_notifiying_details"]["did"].split(":")[4];
-          // get username from session storage
-          this.authorDomain = sessionStorage.getItem(String(this.authorAddress).toLowerCase());
-
-          if (this.authorDomain) {
-            return this.authorDomain;
-          } else {
-            return shortenAddress(this.authorAddress);
-          }
+          return shortenAddress(this.authorAddress);
         }
       }
     }
   },
 
   methods: {
+    getDomainName,
+
+    async fetchUserDomain() {
+      const userDomain = await this.getDomainName(this.authorAddress);
+
+      if (userDomain) {
+        this.authorDomain = userDomain;
+        sessionStorage.setItem(String(this.authorAddress).toLowerCase(), userDomain+this.$config.tldName);
+      }
+    },
+
     openPostDetails() {
       this.$router.push({ name: 'post', query: { id: this.getPostStreamId } });
     },

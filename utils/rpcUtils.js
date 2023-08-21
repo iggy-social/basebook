@@ -15,7 +15,7 @@ export function getRpcs() {
     "592": "https://astar.public.blastapi.io",
     "1284": "https://rpc.ankr.com/moonbeam",
     "5001": "https://rpc.testnet.mantle.xyz",
-    "8453": "https://base-mainnet.public.blastapi.io",
+    "8453": "https://mainnet.base.org",
     "42161": "https://rpc.ankr.com/arbitrum",
     "43114": "https://rpc.ankr.com/avalanche",
     "80001": "https://matic-mumbai.chainstacklabs.com"

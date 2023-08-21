@@ -228,7 +228,7 @@ export default defineNuxtPlugin(() => {
         chainId: ethers.utils.hexValue(networkId),
         chainName: networkName,
         nativeCurrency: { decimals: 18, name: "ETH", symbol: "ETH" }, 
-        rpcUrls: [getRpcs2()[networkId]]
+        rpcUrls: [getRpcs()[networkId]]
       }] 
     }
 

@@ -49,6 +49,7 @@ import { useToast } from "vue-toastification/dist/index.mjs";
 import WaitingToast from "~/components/WaitingToast";
 import ConnectWalletButton from "~/components/ConnectWalletButton";
 import { useUserStore } from '~/store/user';
+import { getDomainName } from '~/utils/domainUtils';
 
 export default {
   name: 'NameMintWidget',
@@ -194,6 +195,8 @@ export default {
   },
 
   methods: {
+    getDomainName, // imported from ~/utils/domainUtils.js
+
     async fetchDomainData() {
       this.loadingData = true;
 
@@ -254,14 +257,13 @@ export default {
 
     async fetchUserDomain() {
       if (this.isActivated) {
-        const tldInterface = new ethers.utils.Interface([
-          "function defaultNames(address) view returns (string)"
-        ]);
+        let userDomain;
 
-        const contract = new ethers.Contract(this.$config.punkTldAddress, tldInterface, this.signer);
-
-        // get user's default domain
-        const userDomain = await contract.defaultNames(this.address);
+        if (this.signer) {
+          userDomain = await this.getDomainName(this.address, this.signer);
+        } else {
+          userDomain = await this.getDomainName(this.address);
+        }
 
         if (userDomain) {
           this.userStore.setDefaultDomain(userDomain+this.$config.tldName);
