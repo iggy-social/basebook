@@ -15,7 +15,7 @@
         />
 
         <li v-for="token in filteredTokensInput" :key="token.address" class="cursor-pointer">
-          <span @click="selectInputToken(token)" class="dropdown-item">{{ token.symbol }}</span>
+          <span @click="selectInputToken(token)" class="dropdown-item">{{ token.symbol }} ({{ token.name }})</span>
         </li>
       </ul>
 
