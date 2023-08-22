@@ -33,6 +33,14 @@
                 {{ shortenAddress(uAddress) }}
               </a>
             </p>
+
+            <p class="me-4">
+              <i class="bi bi-card-list me-1"></i>
+              Manage your .basebook IDs 
+              <a target="_blank" href="https://id.basebook.xyz">
+                here <i class="bi bi-box-arrow-up-right me-2"></i>
+              </a>
+            </p>
           </div>
           <!-- END Data -->
 
