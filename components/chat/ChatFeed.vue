@@ -32,7 +32,7 @@
               v-if="isActivated && $config.web3storageKey !== '' && userStore.getIsConnectedToOrbis && isSupportedChain && hasDomainOrNotRequired"  
               @insertImage="insertImage"
               buttonText="IMG"
-              cls="btn btn-outline-primary me-2 mt-2"
+              cls="btn btn-outline-primary me-2 mt-2 btn-sm"
             />
 
             <!-- Emoji Picker -->
