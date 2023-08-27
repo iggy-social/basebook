@@ -22,14 +22,21 @@ exports.handler = async function (event, context) {
       }
     };
 
-    if (url.startsWith("https://opensea.io") && metadata.title == "Access denied") {
-      finalMetadata.title = "OpenSea";
-      finalMetadata.description = "OpenSea is the world's first and largest web3 marketplace for NFTs and crypto collectibles. Browse, create, buy, sell, and auction NFTs using OpenSea today.";
-      finalMetadata.image.url = "https://static.opensea.io/og-images/Metadata-Image.png";
-    } else if (url.startsWith("https://dune.com") && metadata.title.startsWith("Attention Required")) {
-      finalMetadata.title = "Dune";
-      finalMetadata.description = "Blockchain ecosystem analytics by and for the community. Explore and share data from Ethereum, Polygon, Arbitrum, Optimism, and others for free.";
-      finalMetadata.image.url = "https://dune.com/assets/poster-1440w.png";
+    if (finalMetadata?.title) {
+      if (url.startsWith("https://opensea.io") && (finalMetadata.title == "Access denied" || finalMetadata.title.startsWith("Just a moment"))) {
+        finalMetadata.title = "OpenSea";
+        finalMetadata.description = "OpenSea is the world's first and largest web3 marketplace for NFTs and crypto collectibles. Browse, create, buy, sell, and auction NFTs using OpenSea today.";
+        finalMetadata.image.url = "https://static.opensea.io/og-images/Metadata-Image.png";
+      } else if (url.startsWith("https://dune.com") && (finalMetadata.title.startsWith("Attention Required") || finalMetadata.title.startsWith("Just a moment"))) {
+        finalMetadata.title = "Dune";
+        finalMetadata.description = "Blockchain ecosystem analytics by and for the community. Explore and share data from Ethereum, Polygon, Arbitrum, Optimism, and others for free.";
+        finalMetadata.image.url = "https://dune.com/assets/poster-1440w.png";
+      } else if (finalMetadata.title.startsWith("Just a moment...")) {
+        return {
+          statusCode: 500,
+          body: JSON.stringify({ error: "Data not fetched yet." }),
+        };
+      }
     }
 
     return {
