@@ -39,7 +39,7 @@
       <ChatQuote class="mt-3" :post="quotePost" v-if="showQuote" />
 
       <!-- post actions -->
-      <p class="card-subtitle mt-3 text-muted">
+      <p class="card-subtitle mt-3 mb-3 text-muted">
         
         <span>
           <i @click="likePost" class="cursor-pointer hover-color" :class="alreadyLiked ? 'bi bi-heart-fill text-primary' : 'bi bi-heart'"></i> 
@@ -61,6 +61,23 @@
           <i class="bi bi-trash" /> Delete
         </span>
       </p>
+
+      <!-- link preview -->
+      <div v-if="linkPreview?.title" class="row">
+        
+        <div class="card col-md-8">
+          <a target="_blank" :href="linkPreview.url" class="text-decoration-none text-reset">
+            <img :src="linkPreview.image.url" class="card-img-top" alt="..." />
+            <div class="card-body bg-body rounded-bottom-3 border-end border-bottom border-start">
+              <h5 class="card-title text-break">{{linkPreview.title}}</h5>
+              <p class="card-text text-break text-reset">{{linkPreview.description}}</p>
+            </div>
+          </a>
+        </div>
+      
+      </div>
+      <!-- END link preview -->
+
     </div>
   </div>
 
@@ -137,7 +154,7 @@ import { useUserStore } from '~/store/user';
 import ProfileImage from "~/components/profile/ProfileImage.vue";
 import IggyPostMint from "~~/components/minted-posts/IggyPostMint.vue";
 import ChatQuote from "~/components/chat/ChatQuote.vue";
-import { imgParsing, imgWithoutExtensionParsing, urlParsing, youtubeParsing } from '~/utils/textUtils';
+import { findFirstUrl, imgParsing, imgWithoutExtensionParsing, urlParsing, youtubeParsing } from '~/utils/textUtils';
 
 export default {
   name: "ChatPost",
@@ -155,6 +172,8 @@ export default {
       alreadyLiked: false,
       authorAddress: null,
       authorDomain: null,
+      firstLink: null,
+      linkPreview: null,
       parsedText: null,
       postLengthLimit: 550,
       quotePost: null,
@@ -378,6 +397,61 @@ export default {
       }
     },
 
+    async fetchLinkPreview() {
+      if (this.$config.linkPreviews) {
+        const thisAppUrl = window.location.origin;
+        const firstLinkHttps = this.firstLink.replace("http://", "https://");
+
+        if (firstLinkHttps.startsWith(thisAppUrl.replace("http://", "https://"))) {
+          return;
+        }
+
+        // check in localStorage if link preview is already stored (key is the link)
+        const storedLinkPreviewString = localStorage.getItem(this.firstLink);
+
+        if (storedLinkPreviewString) {
+          this.linkPreview = JSON.parse(storedLinkPreviewString);
+        } else {
+          let fetcherService;
+
+          if (this.$config.linkPreviews === "netlify") {
+            fetcherService = thisAppUrl + "/.netlify/functions/linkPreviews?url=" + this.firstLink;
+          } else if (this.$config.linkPreviews === "microlink") {
+            fetcherService = "https://api.microlink.io/?url=" + this.firstLink;
+          }
+
+          if (fetcherService) {
+            try {
+              const resp = await $fetch(fetcherService).catch((error) => error.data);
+
+              let response = resp;
+
+              if (typeof(resp) === "string") {
+                response = JSON.parse(resp);
+              }
+
+              if (response?.error) {
+                console.log("Error fetching link preview: ", response["error"]);
+                return;
+              }
+
+              if (response?.data) {
+                this.linkPreview = response["data"];
+
+                // store link preview in localStorage
+                if (this.linkPreview?.title) {
+                  localStorage.setItem(this.firstLink, JSON.stringify(this.linkPreview));
+                }
+              }
+              
+            } catch (e) {
+              console.log("Error fetching link preview: ", e);
+            }
+          }
+        }
+      }
+    },
+
     async likePost() {
       if (this.userStore.getIsConnectedToOrbis && !this.alreadyLiked) {
         // mark as liked
@@ -478,6 +552,14 @@ export default {
         allowedTags: [ 'li', 'ul', 'ol', 'br', 'em', 'strong', 'i', 'b' ],
         allowedAttributes: {}
       });
+
+      if (this.$config.linkPreviews) {
+        // get first link in post
+        this.firstLink = findFirstUrl(postText);
+        if (this.firstLink) {
+          this.fetchLinkPreview();
+        }
+      }
 
       postText = imgParsing(postText);
       postText = imgWithoutExtensionParsing(postText);

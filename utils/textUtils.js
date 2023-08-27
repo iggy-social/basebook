@@ -1,3 +1,35 @@
+export function findFirstUrl(text) {
+
+  let urlRegex;
+
+  try {
+    urlRegex = new RegExp('(https?:\\/\\/(?!.*\\.(jpg|png|jpeg|img|gif|pdf|docx))[^\\s]+)(?<![,.:;?!\\-\\"\')])', 'g');
+  } catch (error) {
+    // fallback to simplified regex (without lookbehinds) in case of an old browser or Safari
+    urlRegex = /(https?:\/\/(?!.*\.(jpg|png|jpeg|img|gif|pdf|docx))[^\s]+)/g;
+  }
+
+  const match = text.match(urlRegex);
+
+  if (match) {
+    const url = match[0];
+
+    if (
+      url.startsWith("https://www.youtube.com") || 
+      url.startsWith("http://www.youtube.com") ||
+      url.startsWith("https://youtu.be") || 
+      url.startsWith("http://youtu.be")
+    ) {
+      // ignore youtube embeds
+      return null;
+    } 
+
+    return url;
+  }
+  
+  return null;
+}
+
 export function getImageFromText(text) {
   let imageRegex = /(https?:\/\/.*\.(?:png|jpg|jpeg|gif))/i;
   let imageLinks = text.match(imageRegex);
