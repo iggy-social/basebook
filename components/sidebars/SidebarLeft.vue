@@ -69,6 +69,12 @@
               <i class="bi bi-patch-question"></i> About
             </NuxtLink>
           </li>
+          <li class="nav-item p-1" @click="closeLeftSidebar">
+            <a class="nav-link cursor-pointer" href="https://id.basebook.xyz" target="_blank">
+              <i class="bi bi-person-vcard"></i> Basebook ID 
+              <i class="bi bi-box-arrow-up-right ms-1"></i>
+            </a>
+          </li>
         </ul>
       </div>
 

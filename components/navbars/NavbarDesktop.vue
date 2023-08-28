@@ -9,6 +9,10 @@
         <li v-if="!isActivated" class="nav-item">
           <ConnectWalletButton class="nav-link cursor-pointer" btnText="Connect wallet" />
         </li>
+        
+        <li v-if="!isActivated" class="nav-item">
+          <a class="nav-link cursor-pointer" href="https://id.basebook.xyz" target="_blank">Basebook ID <i class="bi bi-box-arrow-up-right ms-1"></i></a>
+        </li>
 
         <SwitchChainButton v-if="isActivated" :navbar="true" :dropdown="true" />
 
