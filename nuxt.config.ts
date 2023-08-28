@@ -84,7 +84,7 @@ export default defineNuxtConfig({
       projectDescription: "Basebook is a decentralized social network on Base. Brought to you by Punk Domains & Iggy Social.",
       projectTwitter: "https://twitter.com/PunkDomains",
       projectUrl: "https://basebook.xyz",
-      punkMinterAddress: "0x7e8aB50697C7Abe63Bdab6B155C2FB8D285458cB", // punk domain minter contract address
+      punkMinterAddress: "0xfc79caeAc4F44e0eBaD2bE7F42bf134806850d9e", // punk domain minter contract address
       punkNumberOfPrices: 5, // number of different prices (based on domain length), usually 1 (price()) or 5 (price1char() - price5char())
       punkTldAddress: "0x4087fb91a1fbdef05761c02714335d232a2bf3a1", // punk domain TLD address
       randomPostsNumber: 1, // number of random post NFTs to show in the sidebar widget
