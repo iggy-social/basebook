@@ -42,6 +42,13 @@
       </p>
 
       <p class="text-break mt-3">
+        The code is completely open source and you can access it 
+        <a target="_blank" href="https://github.com/iggy-social/basebook">on GitHub</a>. Smart contract addresses are in 
+        the <code>nuxt.config.ts</code> file (all smart contracts are verified on 
+        <a target="_blank" href="https://base.blockscout.com/">Base BlockScout</a>).
+      </p>
+
+      <p class="text-break mt-3">
         What we need from you at this point is to try out Basebook and provide us with feedback. 
         Feel free to post ideas, features suggestions, rants directly in the Basebook. 
         Or you can drop by 
