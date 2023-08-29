@@ -35,11 +35,27 @@
         <p v-if="parsedText.length < postLengthLimit || showFullText" class="card-text text-break" v-html="parsedText"></p>
       </div>
 
+      <!-- link preview -->
+      <div v-if="linkPreview?.title" class="row mt-3 mb-3">
+        
+        <div class="card col-md-8">
+          <a target="_blank" :href="linkPreview.url" class="text-decoration-none text-reset">
+            <img :src="linkPreview.image.url" class="card-img-top" alt="..." />
+            <div class="card-body bg-body rounded-bottom-3 border-end border-bottom border-start">
+              <h5 class="card-title text-break">{{linkPreview.title}}</h5>
+              <p class="card-text text-break text-reset">{{linkPreview.description}}</p>
+            </div>
+          </a>
+        </div>
+      
+      </div>
+      <!-- END link preview -->
+
       <!-- quoted post (replied) -->
-      <ChatQuote class="mt-3" :post="quotePost" v-if="showQuote" />
+      <ChatQuote class="mt-3 mb-3" :post="quotePost" v-if="showQuote" />
 
       <!-- post actions -->
-      <p class="card-subtitle mt-3 mb-3 text-muted">
+      <p class="card-subtitle mt-3 text-muted">
         
         <span>
           <i @click="likePost" class="cursor-pointer hover-color" :class="alreadyLiked ? 'bi bi-heart-fill text-primary' : 'bi bi-heart'"></i> 
@@ -61,22 +77,6 @@
           <i class="bi bi-trash" /> Delete
         </span>
       </p>
-
-      <!-- link preview -->
-      <div v-if="linkPreview?.title" class="row">
-        
-        <div class="card col-md-8">
-          <a target="_blank" :href="linkPreview.url" class="text-decoration-none text-reset">
-            <img :src="linkPreview.image.url" class="card-img-top" alt="..." />
-            <div class="card-body bg-body rounded-bottom-3 border-end border-bottom border-start">
-              <h5 class="card-title text-break">{{linkPreview.title}}</h5>
-              <p class="card-text text-break text-reset">{{linkPreview.description}}</p>
-            </div>
-          </a>
-        </div>
-      
-      </div>
-      <!-- END link preview -->
 
     </div>
   </div>

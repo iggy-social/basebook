@@ -2,7 +2,7 @@
 
 Basebook is a Web3 Social network on Base. It uses [Orbis SDK](https://github.com/OrbisWeb3/orbis-sdk) and Ceramic Network in the background.
 
-- Link: https://basebook.xyz
+- Link: https://basebook.xyz 
 
 What's included:
 
@@ -52,6 +52,18 @@ Start the development server on http://localhost:3000
 
 ```bash
 npm run dev
+```
+
+If you want to use Netlify's backend functions feature (in our case for link previews), make sure to install Netlify CLI:
+
+```bash
+npm install netlify-cli -g
+```
+
+And then start the development server (localhost:8888) like this:
+
+```bash
+netlify dev
 ```
 
 ## Production
