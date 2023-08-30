@@ -267,6 +267,9 @@ export default {
         }
       }
 
+      // TODO: remove when categories are implemented
+      options["tags"] = [{ "slug": "general", "title": "General" }];
+
       // post on Orbis & Ceramic
       let res = await this.$orbis.createPost(options);
 

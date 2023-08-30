@@ -508,20 +508,25 @@ export default {
           context: this.getOrbisContext
         }
 
-        // post on Orbis & Ceramic
-      let res = await this.$orbis.createPost(options);
+        // if post has tags, add them to the options
+        if (this.post?.content?.tags) {
+          options["tags"] = this.post.content.tags;
+        }
 
-      /** Check if posting is successful or not */
-      if (res.status == 200) {
-        // success
-        this.toast("Reply successfully posted", {type: "success"});
-        this.$emit("insertReply", res.doc, this.post.stream_id, this.replyText, this.parsedText, this.post.creator_details.metadata.address);
-        document.getElementById('closeReplyModal'+this.post.stream_id).click();
-        this.replyText = null;
-      } else {
-        console.log("Error posting via Orbis to Ceramic: ", res);
-        this.toast(res.result, {type: "error"});
-      }
+          // post on Orbis & Ceramic
+        let res = await this.$orbis.createPost(options);
+
+        /** Check if posting is successful or not */
+        if (res.status == 200) {
+          // success
+          this.toast("Reply successfully posted", {type: "success"});
+          this.$emit("insertReply", res.doc, this.post.stream_id, this.replyText, this.parsedText, this.post.creator_details.metadata.address);
+          document.getElementById('closeReplyModal'+this.post.stream_id).click();
+          this.replyText = null;
+        } else {
+          console.log("Error posting via Orbis to Ceramic: ", res);
+          this.toast(res.result, {type: "error"});
+        }
 
       } else {
         this.toast("Please sign into chat to be able to reply to a post.", {type: "error"});
