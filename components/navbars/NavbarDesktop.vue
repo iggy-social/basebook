@@ -101,7 +101,6 @@ export default {
 
     async disconnectWallet() {
       this.disconnect();
-      await this.$orbis.logout();
     }
   },
 

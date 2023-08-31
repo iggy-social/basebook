@@ -332,6 +332,14 @@ export default {
     
     onWidthChange() {
       this.width = window.innerWidth;
+    },
+
+    async orbisLogout() {
+      await this.$orbis.logout();
+      this.userStore.setIsConnectedToOrbis(false);
+      this.userStore.setDid(null);
+      this.userStore.setDidParent(null);
+      this.userStore.setOrbisImage(null);
     }
   },
 
@@ -369,24 +377,19 @@ export default {
   watch: {
     address(newVal, oldVal) {
       
-      /*
-      // @todo: if address changes, clear local & session storage (needs further testing)
+      // if address changes, clear local & session storage (needs further testing)
       if (
         newVal.startsWith("0x") &&
         oldVal.startsWith("0x") &&
         String(newVal).toLowerCase() !== String(oldVal).toLowerCase()
       ) {
         console.log("address changed");
-        localStorage.clear();
-				sessionStorage.clear();
+        this.orbisLogout();
       }
-      */
 
       if (newVal) {
         this.fetchUserDomain();
       } 
-
-      //console.log("address changed: " + newVal + ", " + oldVal);
     },
 
     chainId(newVal, oldVal) {
@@ -397,8 +400,9 @@ export default {
 
     isActivated(newVal, oldVal) {
 			if (oldVal === true && newVal === false) { // if user disconnects, clear the local storage
-				localStorage.clear();
-				sessionStorage.clear();
+				console.log("user disconnected");
+        localStorage.setItem("connected", "");
+        this.orbisLogout();
 			} else {
         if (!this.userStore.getDid) {
           this.getOrbisDids();
