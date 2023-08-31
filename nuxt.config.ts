@@ -94,7 +94,7 @@ export default defineNuxtConfig({
       stakeTokenSymbol: "", // stake token symbol (governance token symbol)
       supportedChainId: 8453, // change chain ID
       swapPriceImpactMaxBps: 1000, // max price impact in bips (1 bps = 0.01%, 1000bps = 10%) for the swap function
-      swapRouterAddress: "0x1EB2Adc19eB3Df26D84427Be11F1eB1887c6631c", // iggy swap router contract address
+      swapRouterAddress: "0x249f1172Ebd8686386a5C0Ee704378B85acD0627", // iggy swap router contract address
       tenorApiKey: process.env.TENOR_KEY || "",
       tldName: ".basebook",
       tokenAddress: null, // leave null if it's a native token of the chain

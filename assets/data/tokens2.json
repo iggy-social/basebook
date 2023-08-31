@@ -1,0 +1,74 @@
+{
+  "tokens": [
+    {
+      "chainId": 8453,
+      "address": "0x0000000000000000000000000000000000000000",
+      "decimals": 18,
+      "name": "Ethereum",
+      "symbol": "ETH"
+    },
+    {
+      "chainId": 8453,
+      "address": "0x4B1b0cE9613Cd9Ffc490b0Ea7947238a056d73B9",
+      "decimals": 18,
+      "name": "Foobar FriendTech",
+      "symbol": "FOO"
+    },
+    {
+      "chainId": 8453,
+      "address": "0x56E72C7c31CBF6a61718F0369ef0A14682ACC415",
+      "decimals": 18,
+      "name": "0xCaptainLevi FriendTech",
+      "symbol": "LEVI"
+    },
+    {
+      "chainId": 8453,
+      "address": "0xCA7465e2C4e6fFa198e11ddFA2e6C6b3522Bf799",
+      "decimals": 18,
+      "name": "Mark Jeffrey FriendTech",
+      "symbol": "MARK"
+    },
+    {
+      "chainId": 8453,
+      "address": "0x2AF8D3a67C2862Aa568Ad5E818c0FCE396afdF25",
+      "decimals": 18,
+      "name": "fart connoisseur FriendTech",
+      "symbol": "FART"
+    },
+    {
+      "chainId": 8453,
+      "address": "0x62F40e8C13F6C0201C789060191c72F7281a93dE",
+      "decimals": 18,
+      "name": "icebergy FriendTech",
+      "symbol": "ICE"
+    },
+    {
+      "chainId": 8453,
+      "address": "0x48138275F394DA1e9aBA82eAaA9cf4a5b82bf013",
+      "decimals": 18,
+      "name": "Adam Cochran FriendTech",
+      "symbol": "ADAM"
+    },
+    {
+      "chainId": 8453,
+      "address": "0x0868D3aecd29fE4e4f4490B4D3D0e937C6eF07EC",
+      "decimals": 18,
+      "name": "Sisyphus FriendTech",
+      "symbol": "SIS"
+    },
+    {
+      "chainId": 8453,
+      "address": "0x15A98e2A1B3025e9EE91bfE2480B387Eb7c0ecE4",
+      "decimals": 18,
+      "name": "JKrantz FriendTech",
+      "symbol": "JEFF"
+    },
+    {
+      "chainId": 8453,
+      "address": "0x78bF63F15A48DD019631Fb0Cb7495D116F64dC1a",
+      "decimals": 18,
+      "name": "GPTGod FriendTech",
+      "symbol": "GG"
+    }
+  ]
+}
