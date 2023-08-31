@@ -66,6 +66,12 @@ And then start the development server (localhost:8888) like this:
 netlify dev
 ```
 
+If you need to kill a localhost port (e.g. 3000), try this:
+
+```bash
+kill -9 $(lsof -ti:3000)
+```
+
 ## Production
 
 Build the application for production:
