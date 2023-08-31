@@ -6,6 +6,13 @@
       </NuxtLink>
 
       <ul class="navbar-nav justify-content-end flex-grow-1">
+
+        <li class="nav-item">
+          <a class="nav-link cursor-pointer" href="https://zealy.io/c/basebook/questboard" target="_blank">
+            <i class="bi bi-fire"></i> Quests
+          </a>
+        </li>
+        
         <li v-if="!isActivated" class="nav-item">
           <ConnectWalletButton class="nav-link cursor-pointer" btnText="Connect wallet" />
         </li>
