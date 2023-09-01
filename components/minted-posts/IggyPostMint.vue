@@ -71,6 +71,10 @@ export default {
 
   created() {
     this.createTextPreview();
+
+    if (String(this.post.creator_details.metadata.address).toLowerCase() === String(this.address).toLowerCase()) {
+      this.makePost = false;
+    }
   },
 
   computed: {
