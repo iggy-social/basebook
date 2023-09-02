@@ -19,7 +19,7 @@
               :routerAddress="$config.swapRouterAddress" 
               swapId="SwapPage1" 
               :tokens="tokens"
-              poweredBy="Baseswap"
+              poweredBy="BaseSwap"
             />
           </div>
         </div>

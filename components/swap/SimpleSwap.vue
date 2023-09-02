@@ -186,10 +186,18 @@
 
     </div>
 
-    <p class="text-center mt-4" v-if="poweredBy">
+    <p class="text-center mt-5" v-if="poweredBy">
       <small>
-        <em>Powered by {{ poweredBy }}.</em>
+        <em>Powered by 
+          <a href="https://baseswap.fi/" target="_blank" class="text-reset text-decoration-none">{{ poweredBy }}</a>.
+        </em>
       </small>
+
+      <br />
+      
+      <a href="https://baseswap.fi/" target="_blank">
+        <img src="@/assets/img/other/baseswap.png" style="width: 45px;" class="mt-2" alt="BaseSwap">
+      </a>
     </p>
 
   </div>

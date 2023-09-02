@@ -7,7 +7,7 @@
       <NameMintWidget />
 
       <!-- Swap tokens -->
-      <SimpleSwapWidget v-if="$config.swapRouterAddress" :routerAddress="$config.swapRouterAddress" :tokens="tokens" title="Swap tokens" poweredBy="Baseswap" />
+      <SimpleSwapWidget v-if="$config.swapRouterAddress" :routerAddress="$config.swapRouterAddress" :tokens="tokens" title="Swap tokens" poweredBy="BaseSwap" />
 
       <!-- Random minted post(s) -->
       <MintedPostsWidget @closeRightSidebar="closeRightSidebar" />
