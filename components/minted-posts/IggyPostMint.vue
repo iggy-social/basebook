@@ -98,8 +98,8 @@ export default {
         allowedAttributes: {}
       });
 
-      if (sanitizedText.length > 100) {
-        this.textPreview = sanitizedText.replace(/[^\x00-\x7F]/g, "").substring(0, 97) + "...";
+      if (sanitizedText.length > 243) {
+        this.textPreview = sanitizedText.replace(/[^\x00-\x7F]/g, "").substring(0, 240) + "...";
       } else if (sanitizedText.length === 0) {
         this.textPreview = "";
       } else {
