@@ -28,14 +28,14 @@
             v-model="makePost"
           >
 
-          <label class="form-check-label" for="flexCheckChecked">
+          <label class="form-check-label" for="flexCheckChecked" @click="makePost = !makePost">
             Make a post about the minting
           </label>
         </div>
 
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-primary" @click="mintPost" :disabled="!isActivated">
+        <button type="button" class="btn btn-primary" @click="mintPost" :disabled="!isActivated || waitingMint">
           <span v-if="waitingMint" class="spinner-border spinner-border-sm mx-1" role="status" aria-hidden="true"></span>
           Mint post for {{ postPrice }} {{ $config.tokenSymbol }}
         </button>
