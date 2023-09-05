@@ -9,6 +9,35 @@
       <!-- Swap tokens -->
       <SimpleSwapWidget v-if="$config.swapRouterAddress" :routerAddress="$config.swapRouterAddress" :tokens="tokens" title="Swap tokens" poweredBy="BaseSwap" />
 
+      <!-- BasePaint -->
+      <div class="card m-2 bg-light">
+        <div class="card-header bg-light">
+          BasePaint
+        </div>
+
+        <div class="card-body sidebar-card-body">
+          <div class="row">
+            <p>Paint together. Mint daily.</p>
+
+            <a href="https://basepaint.xyz/?ref=basebook.xyz" target="_blank">
+              <img class="img-fluid rounded" src="https://bafybeihwt32qqr6vxeggfyv7imnzv3fob5lxtwaajjahnoq54avetlgiwq.ipfs.w3s.link/basepaint.jpg" />
+            </a>
+          </div>
+        </div>
+
+        <div class="card-footer bg-light text-body-secondary text-center">
+          <a href="https://basepaint.xyz/?ref=basebook.xyz" class="btn btn-outline-primary mb-3 me-2" target="_blank">
+            Draw
+            <i class="bi bi-box-arrow-up-right ms-1"></i>
+          </a>
+
+          <a href="https://basepaint.xyz/mint" class="btn btn-outline-primary mb-3" target="_blank">
+            Mint
+            <i class="bi bi-box-arrow-up-right ms-1"></i>
+          </a>
+        </div>
+      </div>
+
       <!-- Random minted post(s) -->
       <MintedPostsWidget @closeRightSidebar="closeRightSidebar" />
 
