@@ -28,7 +28,7 @@
             v-model="makePost"
           >
 
-          <label class="form-check-label" for="flexCheckChecked" @click="makePost = !makePost">
+          <label class="form-check-label" for="flexCheckChecked">
             Make a post about the minting
           </label>
         </div>
