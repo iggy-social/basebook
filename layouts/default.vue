@@ -201,6 +201,15 @@ export default {
         return true;
       }
       return false;
+    },
+
+    orbisAddress() {
+      // address which is signed with Orbis
+      if (this.userStore.getDidParent) {
+        // did parent example: did:pkh:eip155:137:0xb29050965a5ac70ab487aa47546cdcbc97dae45d
+        // get the last item (address) from did parent
+        return this.userStore.getDidParent.split(":").pop();
+      }
     }
   },
 
@@ -413,6 +422,15 @@ export default {
     isConnectedToOrbis(newVal, oldVal) {
       if (newVal && oldVal === false) {
         this.fetchOrbisProfile();
+      }
+    },
+
+    orbisAddress(newVal, oldVal) {
+      if (newVal && this.address) {
+        if (String(newVal).toLowerCase() != String(this.address).toLowerCase()) {
+          console.log("Logging out of Orbis because the address in signed Orbis credentials does not match the current user's address.");
+          this.orbisLogout();
+        }
       }
     },
 
