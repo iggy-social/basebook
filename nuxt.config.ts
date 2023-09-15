@@ -72,6 +72,17 @@ export default defineNuxtConfig({
       nftDefaultRatio: 1, // default ratio for the NFT price bonding curve
       nftLaunchpadBondingAddress: "0xa9cfa4e8EA79537F5893f45c3B1491A2f7B54e7E", // NFT launchpad with bonding curve contract address
       nftOrbisContext: "kjzl6cwe1jw148wq50ose4mjrt17aodei2xor9kbw72b3wzvgzu7wm3jlhaghd0", // Orbis context for NFT collection pages
+      orbisCategories: [ // use only alphanumeric ASCII characters for slugs! (no spaces, only dash is allowed)
+        { "slug": "all", "title": "All posts", "hidden": false }, // not a real tag, just denotes the absence of a tag (always keep it here)
+        { "slug": "general", "title": "General discussion", "hidden": false },
+        { "slug": "shill", "title": "Shill & discuss projects", "hidden": false },
+        { "slug": "nfts", "title": "Memes & NFTs", "hidden": false }, // keep this category for the purpose of the NFT launchpad
+        { "slug": "governance", "title": "Governance", "hidden": false },
+        { "slug": "food", "title": "Food & recipes", "hidden": true },
+        { "slug": "movie", "title": "Movies & series", "hidden": false },
+        { "slug": "music", "title": "Music", "hidden": false },
+        { "slug": "random", "title": "Random", "hidden": false },
+      ],
       orbisContext: "kjzl6cwe1jw14anu2yjw8124d9j88fsxc5eospyzmiz9i76s4e3tknd48s0998c", // production context
       orbisTest: false, // if true, test context will be used instead of the production one
       orbisTestContext: "kjzl6cwe1jw145tfqv2eqv8tiz6puo27meyz4smz40atppuc13tulqca87k35z2", // test context

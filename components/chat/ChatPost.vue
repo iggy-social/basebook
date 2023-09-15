@@ -38,18 +38,43 @@
       <!-- link preview -->
       <div v-if="linkPreview?.title" class="row mt-3 mb-3">
         
-        <div class="card col-md-6">
-          <a target="_blank" :href="linkPreview.url" class="text-decoration-none text-reset">
-            <img :src="linkPreview.image.url" class="card-img-top" alt="..." />
-            <div class="card-body bg-body rounded-bottom-3 border-end border-bottom border-start">
-              <h5 class="card-title text-break">{{linkPreview.title}}</h5>
-              <p class="card-text text-break text-reset">{{linkPreview.description}}</p>
-            </div>
-          </a>
-        </div>
-      
+          <div class="card col-md-6">
+            <a target="_blank" :href="linkPreview.url" class="text-decoration-none text-reset">
+              <img :src="linkPreview.image.url" class="card-img-top" />
+
+              <div class="card-body bg-body rounded-bottom-3 border-end border-bottom border-start">
+                <h5 class="card-title text-break">{{linkPreview.title}}</h5>
+                <p class="card-text text-break text-reset">{{linkPreview.description}}</p>
+              </div>
+            </a>
+          </div>
+        
       </div>
       <!-- END link preview -->
+
+      <!-- New NFT collection created -->
+      <div v-if="customDataType === 'nftCollectionCreated'" class="row mt-3 mb-3">
+        
+          <div class="card col-md-6">
+            <NuxtLink :to="'/nft/collection?id='+post.content.data.collectionAddress" class="text-decoration-none text-reset">
+              <img :src="post.content.data.collectionImage" class="card-img-top" />
+
+              <div class="card-body bg-body rounded-bottom-3 border-end border-bottom border-start">
+                <h5 class="card-title text-break">{{ post.content.data.collectionName }}</h5>
+                <p class="card-text text-break text-reset">{{ getNftCollectionDescription }}</p>
+              </div>
+            </NuxtLink>
+          </div>
+        
+      </div>
+      <!-- New NFT collection created -->
+
+      <!-- Minted Post Image -->
+      <div v-if="customDataType === 'mintedPost'" class="row mt-2">
+        <div class="col-10 col-sm-8 col-md-4">
+          <MintedPostImage :id="getMintedPostTokenId" />
+        </div>
+      </div>
 
       <!-- quoted post (replied) -->
       <ChatQuote class="mt-3 mb-3" :post="quotePost" v-if="showQuote" />
@@ -152,19 +177,21 @@ import resolvers from "~/assets/data/resolvers.json";
 import { useToast } from "vue-toastification/dist/index.mjs";
 import { useUserStore } from '~/store/user';
 import ProfileImage from "~/components/profile/ProfileImage.vue";
-import IggyPostMint from "~~/components/minted-posts/IggyPostMint.vue";
+import IggyPostMint from "~/components/minted-posts/IggyPostMint.vue";
+import MintedPostImage from '~/components/minted-posts/MintedPostImage.vue';
 import ChatQuote from "~/components/chat/ChatQuote.vue";
 import { findFirstUrl, imgParsing, imgWithoutExtensionParsing, urlParsing, youtubeParsing } from '~/utils/textUtils';
 
 export default {
   name: "ChatPost",
   emits: ["insertReply", "removePost"],
-  props: ["post", "showQuotedPost"],
+  props: ["orbisContext", "post", "showQuotedPost"],
 
   components: {
     ChatQuote,
-    ProfileImage,
-    IggyPostMint
+    IggyPostMint,
+    MintedPostImage,
+    ProfileImage
   },
 
   data() {
@@ -172,6 +199,7 @@ export default {
       alreadyLiked: false,
       authorAddress: null,
       authorDomain: null,
+      customDataType: null,
       firstLink: null,
       linkPreview: null,
       parsedText: null,
@@ -198,6 +226,11 @@ export default {
       this.showFullText = true;
     }
 
+    // check if there is custom data attached to a post
+    if (this.post?.content?.data) {
+      this.customDataType = this.post.content.data?.type;
+    }
+
     // create quote post object
     if (this.post.reply_to_details) {
       this.quotePost = {
@@ -220,15 +253,39 @@ export default {
   },
 
   computed: {
+    getMintedPostTokenId() {
+      if (this.customDataType === "mintedPost") {
+        return String(this.post.content.data.nftTokenId);
+      }
+
+      return null;
+    },
+
+    getNftCollectionDescription() {
+      if (this.customDataType === "nftCollectionCreated") {
+        
+        // if description length is too long, shorten it and attach "..."
+        const maxLength = 100;
+
+        if (this.post.content.data.collectionDescription.length > maxLength) {
+          return this.post.content.data.collectionDescription.substring(0, maxLength) + "...";
+        } else {
+          return this.post.content.data.collectionDescription;
+        }
+      }
+
+      return null;
+    },
+
     getOrbisContext() {
       if (this.post?.context) {
         return this.post.context;
-      } else if (this.post?.content?.context) {
+      } else if (this.post?.content.context) {
         return this.post.content.context;
-      } else if (this.post?.context_details?.context_id) {
+      } else if (this.post?.context_details.context_id) {
         return this.post.context_details.context_id;
       } else {
-        return this.$config.orbisContext;
+        return this.orbisContext;
       }
     },
 
@@ -501,6 +558,7 @@ export default {
 
     async replyPost() {
       if (this.userStore.getIsConnectedToOrbis) {
+
         const options = {
           master: this.post.master, // the main post in the thread
           reply_to: this.post.stream_id, // important: reply_to needs to be filled out even if the reply is directly to the master post
@@ -513,7 +571,7 @@ export default {
           options["tags"] = this.post.content.tags;
         }
 
-          // post on Orbis & Ceramic
+        // post on Orbis & Ceramic
         let res = await this.$orbis.createPost(options);
 
         /** Check if posting is successful or not */
