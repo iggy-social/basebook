@@ -56,7 +56,7 @@ export default defineNuxtConfig({
       chatTokenAddress: "", // chat token address
       chatTokenImage: "", // chat token image
       chatTokenSymbol: "", // chat token symbol or name
-      domainRequiredToPost: true,
+      domainRequiredToPost: false,
       favicon: "/img/favicon.svg",
       getPostsLimit: 30, // number of posts to fetch from Orbis in the getPosts() function
       iggyPostAddress: "0x06A7Ab7Bb68b0ad6eB7688C5781E60BE6AFc658d",

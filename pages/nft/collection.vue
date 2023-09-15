@@ -440,7 +440,7 @@ export default {
 
       let collection;
 
-      const collectionFromStorage = sessionStorage.getItem(String(this.cAddress+"-collection").toLowerCase());
+      const collectionFromStorage = localStorage.getItem(String(this.cAddress+"-collection").toLowerCase());
 
       if (collectionFromStorage) {
         collection = JSON.parse(collectionFromStorage);
@@ -541,7 +541,7 @@ export default {
         name: this.cName
       };
 
-      sessionStorage.setItem(String(this.cAddress+"-collection").toLowerCase(), JSON.stringify(collection));
+      localStorage.setItem(String(this.cAddress+"-collection").toLowerCase(), JSON.stringify(collection));
     },
 
     async sellNft() {
@@ -687,7 +687,7 @@ export default {
               name: this.cName
             };
 
-            sessionStorage.setItem(String(this.cAddress+"-collection").toLowerCase(), JSON.stringify(collection));
+            localStorage.setItem(String(this.cAddress+"-collection").toLowerCase(), JSON.stringify(collection));
           }
 
           this.editImageMetadataUrl = null;

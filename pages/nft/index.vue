@@ -251,7 +251,7 @@ export default {
         const nftContract = new ethers.Contract(inputArray[i], nftInterface, provider);
 
         // fetch collection object from session storage
-        const collectionString = sessionStorage.getItem(String(inputArray[i]).toLowerCase()+"-collection");
+        const collectionString = localStorage.getItem(String(inputArray[i]).toLowerCase()+"-collection");
         let collection;
         
         if (collectionString) {
@@ -278,6 +278,12 @@ export default {
         } else {
           cImage = await nftContract.collectionPreview();
         }
+
+        localStorage.setItem(String(inputArray[i]).toLowerCase()+"-collection", JSON.stringify({
+          address: inputArray[i],
+          name: cName,
+          image: cImage
+        }));
 
         outputArray.push({
           address: inputArray[i],
