@@ -29,9 +29,17 @@
         <ul class="nav nav-pills flex-column">
           <li class="nav-item p-1" @click="closeLeftSidebar">
             <NuxtLink class="nav-link" :class="$route.path === '/' ? 'active' : ''" aria-current="page" to="/">
-              <i class="bi bi-house"></i> Home
+              <i class="bi bi-rocket-takeoff"></i> NFT Launchpad
             </NuxtLink>
           </li>
+
+          <!-- Chat -->
+          <li class="nav-item p-1" @click="closeLeftSidebar">
+            <NuxtLink class="nav-link" :class="$route.path.startsWith('/chat') ? 'active' : ''" aria-current="page" to="/chat">
+              <i class="bi bi-chat-dots"></i> Chat
+            </NuxtLink>
+          </li>
+          
           <li v-if="isActivated" class="nav-item p-1" @click="closeLeftSidebar">
             <NuxtLink class="nav-link" :class="$route.path.startsWith('/profile') ? 'active' : ''" aria-current="page" to="/profile">
               <i class="bi bi-person"></i> Profile
@@ -47,13 +55,6 @@
                 {{ notificationsStore.getUnreadNotificationsCount }}
               </span>
 
-            </NuxtLink>
-          </li>
-
-          <!-- Chat -->
-          <li class="nav-item p-1" @click="closeLeftSidebar">
-            <NuxtLink class="nav-link" :class="$route.path.startsWith('/chat') ? 'active' : ''" aria-current="page" to="/chat">
-              <i class="bi bi-chat-dots"></i> Chat
             </NuxtLink>
           </li>
 

@@ -4,7 +4,7 @@
 
   <div class="card-body sidebar-card-body">
     <p>
-      Get yourself a {{$config.tldName}} username and start chatting with other community members.
+      Get yourself a {{$config.tldName}} username and start chatting with other NFT enthusiasts.
     </p>
     
     <div class="input-group mb-3">

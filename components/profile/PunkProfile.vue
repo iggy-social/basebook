@@ -213,7 +213,7 @@
             class="nav-link" 
             :class="currentTab === 'mints' ? 'active' : ''" 
             @click="changeCurrentTab('mints')" 
-          >Mints</button>
+          >Post NFTs</button>
         </li>
       </ul>
       <!-- END Tabs Navigation -->
@@ -223,7 +223,7 @@
 
         <!-- Posts Tab -->
         <div v-if="currentTab === 'posts' && uDid">
-          <ChatFeed :byDid="uDid" :hideCommentBox="true" />
+          <ChatFeed :byDid="uDid" :hideCommentBox="true" :allPosts="true" :orbisContext="getOrbisContext" />
         </div>
 
         <!-- Mints Tab -->

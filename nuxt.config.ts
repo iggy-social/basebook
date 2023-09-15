@@ -75,12 +75,11 @@ export default defineNuxtConfig({
       orbisCategories: [ // use only alphanumeric ASCII characters for slugs! (no spaces, only dash is allowed)
         { "slug": "all", "title": "All posts", "hidden": false }, // not a real tag, just denotes the absence of a tag (always keep it here)
         { "slug": "general", "title": "General discussion", "hidden": false },
-        { "slug": "shill", "title": "Shill & discuss projects", "hidden": false },
+        { "slug": "shill", "title": "Shill & discuss projects", "hidden": true },
         { "slug": "nfts", "title": "Memes & NFTs", "hidden": false }, // keep this category for the purpose of the NFT launchpad
-        { "slug": "governance", "title": "Governance", "hidden": false },
+        { "slug": "governance", "title": "Governance", "hidden": true },
         { "slug": "food", "title": "Food & recipes", "hidden": true },
-        { "slug": "movie", "title": "Movies & series", "hidden": false },
-        { "slug": "music", "title": "Music", "hidden": false },
+        { "slug": "movies-music", "title": "Movies & Music", "hidden": true },
         { "slug": "random", "title": "Random", "hidden": false },
       ],
       orbisContext: "kjzl6cwe1jw14anu2yjw8124d9j88fsxc5eospyzmiz9i76s4e3tknd48s0998c", // production context
