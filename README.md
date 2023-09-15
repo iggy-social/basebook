@@ -1,6 +1,6 @@
-# Basebook
+# Basebook - Social NFT Launchpad on Base
 
-Basebook is a Web3 Social network on Base. It uses [Orbis SDK](https://github.com/OrbisWeb3/orbis-sdk) and Ceramic Network in the background.
+Basebook is the first social NFT launchpad on Base. It uses [Orbis SDK](https://github.com/OrbisWeb3/orbis-sdk) and Ceramic Network in the background.
 
 - Link: https://basebook.xyz 
 

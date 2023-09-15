@@ -10,10 +10,10 @@
         <i class="bi bi-arrow-left-circle cursor-pointer"></i>
       </p>
 
-      <h3 class="mb-3 mt-3">Web3 Social is here.</h3>
+      <h3 class="mb-3 mt-3">The first Social NFT Launchpad on Base.</h3>
 
       <p class="text-break mt-3">
-        Basebook is <strong>a web3 social network</strong> built on Base, bringing about a brighter, decentralized social era.
+        Basebook is the first Web3 Social NFT launchpad on Base. Create and discuss NFTs on Basebook!
       </p>
 
       <p class="text-break mt-3">
@@ -22,8 +22,11 @@
       </p>
 
       <p class="text-break mt-3">
-        Let's leave the old world of corporation-controlled social media behind us and move towards a decentralized future. 
-        We promise, it's going to be a lot of fun!
+        NFT Launchpad is a place where you can create, mint and sell NFTs.
+      </p>
+
+      <p class="text-break mt-3">
+        With Basebook, we have combined these two concepts into one. Let's explore the new frontiers!
       </p>
 
       <p class="text-break mt-3">

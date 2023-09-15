@@ -1,21 +1,16 @@
 <template>
-  <!--
   <ChatFeed class="mt-1" :showQuotedPost="$config.showRepliesOnHomepage" />
-  -->
-  <Nft :hideBackButton="true" />
 </template>
 
 <script>
 import { useEthers } from 'vue-dapp'
-//import ChatFeed from "../components/chat/ChatFeed.vue"
-import Nft from "~/pages/nft/index.vue"
+import ChatFeed from "../components/chat/ChatFeed.vue"
 
 export default {
-  name: "index",
+  name: "chat",
 
   components: {
-    //ChatFeed,
-    Nft
+    ChatFeed
   },
 
   setup() {

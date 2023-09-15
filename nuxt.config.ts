@@ -69,20 +69,26 @@ export default defineNuxtConfig({
       marketplaceNftItemUrl: "https://opensea.io/assets/base/0x06A7Ab7Bb68b0ad6eB7688C5781E60BE6AFc658d/", // url (append nft id to it)
       maxImageUploadSizeMb: 1, // max image upload size in MB
       newsletterLink: "https://zcmp.eu/AXkd",
+      nftDefaultRatio: 1, // default ratio for the NFT price bonding curve
+      nftLaunchpadBondingAddress: "0xa9cfa4e8EA79537F5893f45c3B1491A2f7B54e7E", // NFT launchpad with bonding curve contract address
+      nftOrbisContext: "kjzl6cwe1jw148wq50ose4mjrt17aodei2xor9kbw72b3wzvgzu7wm3jlhaghd0", // Orbis context for NFT collection pages
       orbisContext: "kjzl6cwe1jw14anu2yjw8124d9j88fsxc5eospyzmiz9i76s4e3tknd48s0998c", // production context
       orbisTest: false, // if true, test context will be used instead of the production one
       orbisTestContext: "kjzl6cwe1jw145tfqv2eqv8tiz6puo27meyz4smz40atppuc13tulqca87k35z2", // test context
       previewImage: "/img/cover.png",
       previewImageAirdrop: "/img/cover-airdrop.png",
+      previewImageNftCollection: "/img/cover-nft-collection.png",
+      previewImageNftCreate: "/img/cover-nft-create.png",
+      previewImageNftLaunchpad: "/img/cover-nft-launchpad.png",
       previewImagePost: "/img/cover-post.png",
       previewImagePostNft: "/img/cover-post-nft.png",
       previewImageProfile: "/img/cover-profile.png",
       previewImageStake: "/img/cover-stake.png",
       profileMintedPostIdsMax: 36, // max number of minted post ids to show in the profile page
-      projectMetadataTitle: "Basebook - Decentralized Social Network On Base",
+      projectMetadataTitle: "Basebook - Social NFT Launchpad On Base",
       projectName: "Basebook",
-      projectDescription: "Basebook is a decentralized social network on Base. Brought to you by Punk Domains & Iggy Social.",
-      projectTwitter: "https://twitter.com/PunkDomains",
+      projectDescription: "Basebook is the first social NFT launchpad on Base. Create and discuss NFTs on Basebook!",
+      projectTwitter: "https://twitter.com/Basebook0x",
       projectUrl: "https://basebook.xyz",
       punkMinterAddress: "0xfc79caeAc4F44e0eBaD2bE7F42bf134806850d9e", // punk domain minter contract address
       punkNumberOfPrices: 5, // number of different prices (based on domain length), usually 1 (price()) or 5 (price1char() - price5char())

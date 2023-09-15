@@ -49,6 +49,14 @@
 
             </NuxtLink>
           </li>
+
+          <!-- Chat -->
+          <li class="nav-item p-1" @click="closeLeftSidebar">
+            <NuxtLink class="nav-link" :class="$route.path.startsWith('/chat') ? 'active' : ''" aria-current="page" to="/chat">
+              <i class="bi bi-chat-dots"></i> Chat
+            </NuxtLink>
+          </li>
+
           <li class="nav-item p-1" @click="closeLeftSidebar" v-if="$config.swapRouterAddress">
             <NuxtLink class="nav-link" :class="$route.path.startsWith('/swap') ? 'active' : ''" aria-current="page" to="/swap">
               <i class="bi bi-arrow-down-up"></i> Swap
