@@ -10,11 +10,11 @@
     <Meta name="twitter:description" :content="'Check out this chat post on ' + $config.projectName + '!'" />
   </Head>
 
-  <ChatPost class="m-4" v-if="masterPost" :post="masterPost" />
+  <ChatPost class="m-4" v-if="masterPost" :post="masterPost" :orbisContext="getOrbisContext" />
 
-  <ChatPost v-if="post" :post="post" />
+  <ChatPost v-if="post" :post="post" :orbisContext="getOrbisContext" />
 
-  <ChatFeed v-if="post" :id="post.stream_id" :master="post.master" />
+  <ChatFeed v-if="post" :id="post.stream_id" :master="post.master" :masterPost="post" :orbisContext="getOrbisContext" />
 </div>
 </template>
 
@@ -43,6 +43,22 @@ export default {
   },
 
   computed: {
+    getOrbisContext() {
+      if (this.post?.context) {
+        return this.post.context;
+      } else if (this.post?.content.context) {
+        return this.post.content.context;
+      } else if (this.post?.context_details.context_id) {
+        return this.post.context_details.context_id;
+      } else {
+        if (this.$config.orbisTest) {
+          return this.$config.orbisTestContext;
+        } else {
+          return this.$config.orbisContext;
+        }
+      }
+    },
+    
     getPostAuthor() {
       if (this.post) {
         return this.post.creator_details.metadata.address;
