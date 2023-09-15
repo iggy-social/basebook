@@ -13,7 +13,7 @@
       <h3 class="mb-3 mt-3">The first Social NFT Launchpad on Base.</h3>
 
       <p class="text-break mt-3">
-        Basebook is the first Web3 Social NFT launchpad on Base. Create and discuss NFTs on Basebook!
+        Basebook is the first Web3 Social NFT launchpad on Base. But what does that even mean? Let's break it down. 👇
       </p>
 
       <p class="text-break mt-3">
@@ -26,7 +26,7 @@
       </p>
 
       <p class="text-break mt-3">
-        With Basebook, we have combined these two concepts into one. Let's explore the new frontiers!
+        With Basebook, we have combined these two concepts into one. Let's explore the new frontiers together!
       </p>
 
       <p class="text-break mt-3">
