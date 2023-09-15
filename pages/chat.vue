@@ -1,5 +1,5 @@
 <template>
-  <ChatFeed class="mt-1" :showQuotedPost="$config.showRepliesOnHomepage" />
+  <ChatFeed class="mt-1" :showQuotedPost="$config.showRepliesOnHomepage" :orbisContext="getOrbisContext" />
 </template>
 
 <script>
@@ -11,6 +11,16 @@ export default {
 
   components: {
     ChatFeed
+  },
+
+  computed: {
+    getOrbisContext() {
+      if (this.$config.orbisTest) {
+        return this.$config.orbisTestContext;
+      } else {
+        return this.$config.orbisContext;
+      }
+    }
   },
 
   setup() {
