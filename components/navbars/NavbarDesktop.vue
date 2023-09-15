@@ -2,7 +2,7 @@
   <nav class="navbar navbar-expand-lg navbar-bg-custom">
     <div class="container-fluid mx-3">
       <NuxtLink class="navbar-brand" to="/">
-        <img src="/img/basebook-logo-1.png" alt="Chat logo" height="30">
+        <img src="/img/basebook-logo-wide.png" alt="Chat logo" height="30">
       </NuxtLink>
 
       <ul class="navbar-nav justify-content-end flex-grow-1">

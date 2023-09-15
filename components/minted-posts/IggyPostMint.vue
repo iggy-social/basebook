@@ -19,7 +19,6 @@
           Minting price: {{ postPrice }} {{ $config.tokenSymbol }}
         </p>
 
-        <!-- Show replies on home feed -->
         <div class="form-check">
           <input 
             class="form-check-input" 
@@ -63,6 +62,7 @@ export default {
     return {
       makePost: true,
       postPrice: null,
+      quantity: 1,
       textImage: null,
       textPreview: null,
       waitingMint: false
@@ -98,8 +98,8 @@ export default {
         allowedAttributes: {}
       });
 
-      if (sanitizedText.length > 243) {
-        this.textPreview = sanitizedText.replace(/[^\x00-\x7F]/g, "").substring(0, 240) + "...";
+      if (sanitizedText.length > 183) {
+        this.textPreview = sanitizedText.replace(/[^\x00-\x7F]/g, "").substring(0, 180) + "...";
       } else if (sanitizedText.length === 0) {
         this.textPreview = "";
       } else {
@@ -161,7 +161,7 @@ export default {
             ethers.constants.AddressZero, // @todo: enable referrals
             String(this.textPreview), // text preview
             String(this.textImage),
-            1, // quantity
+            this.quantity,
             {
               value: postPriceWei
             }
@@ -207,7 +207,7 @@ export default {
 
               const options = {
                 reply_to: this.post.stream_id, // important: reply_to needs to be filled out even if the reply is directly to the master post
-                body: "I have minted your post as NFT. <br /><br />" + this.$config.marketplaceNftItemUrl + String(lastMintedId), 
+                body: "I have minted your post as NFT! 🎉", 
                 context: this.getOrbisContext
               }
 
@@ -220,6 +220,14 @@ export default {
               // if post has tags, add them to the options
               if (this.post?.content?.tags) {
                 options["tags"] = this.post.content.tags;
+              }
+
+              options["data"] = {
+                type: "mintedPost",
+                collectionAddress: this.$config.iggyPostAddress,
+                mintPriceWei: postPriceWei,
+                nftTokenId: String(lastMintedId),
+                quantity: this.quantity
               }
 
               // post on Orbis (shoot and forget)

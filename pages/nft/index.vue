@@ -1,15 +1,19 @@
 <template>
 <Head>
-  <Title>NFT Launchpad | {{ $config.projectMetadataTitle }}</Title>
-  <Meta property="og:title" :content="'NFT Launchpad | ' + $config.projectMetadataTitle" />
+  <Title>{{ $config.projectMetadataTitle }}</Title>
+  <Meta name="description" :content="$config.projectDescription" />
+  <Link rel="icon" type="image/x-icon" :href="$config.favicon" />
 
-  <Meta name="description" :content="'Check out these awesome NFT collections on ' + $config.projectName + '!'" />
+  <Meta property="og:title" :content="$config.projectMetadataTitle" />
+  <Meta property="og:description" :content="$config.projectDescription" />
+  <Meta property="og:image" :content="$config.projectUrl+$config.previewImage" />
 
-  <Meta property="og:image" :content="$config.projectUrl+$config.previewImageNftLaunchpad" />
-  <Meta property="og:description" :content="'Check out these awesome NFT collections on ' + $config.projectName + '!'" />
-
-  <Meta name="twitter:image" :content="$config.projectUrl+$config.previewImageNftLaunchpad" />
-  <Meta name="twitter:description" :content="'Check out these awesome NFT collections on ' + $config.projectName + '!'" />
+  <Meta name="twitter:card" content="summary_large_image" />
+  <Meta name="twitter:site" :content="$config.projectTwitter" />
+  <Meta name="twitter:creator" :content="$config.projectTwitter" />
+  <Meta name="twitter:title" :content="$config.projectMetadataTitle" />
+  <Meta name="twitter:description" :content="$config.projectDescription" />
+  <Meta name="twitter:image" :content="$config.projectUrl+$config.previewImage" />
 </Head>
 
 <div class="card border scroll-500">
