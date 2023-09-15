@@ -93,6 +93,7 @@
         </ul>
       </div>
 
+      <!--
       <div v-if="$config.newsletterLink" class="card m-2 bg-light">
         <div class="card-header bg-light">{{ $config.projectName }} Newsletter</div>
         <div class="card-body sidebar-card-body">
@@ -102,6 +103,7 @@
           </a>
         </div>
       </div>
+      -->
       
    </div>
   </div>

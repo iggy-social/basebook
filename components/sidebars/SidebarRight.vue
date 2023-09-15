@@ -6,10 +6,11 @@
       <!-- Mint/register a domain name -->
       <NameMintWidget />
 
-      <!-- Swap tokens -->
-      <SimpleSwapWidget v-if="$config.swapRouterAddress" :routerAddress="$config.swapRouterAddress" :tokens="tokens" title="Swap tokens" poweredBy="BaseSwap" />
+      <!-- Swap tokens 
+      <SimpleSwapWidget v-if="$config.swapRouterAddress" :routerAddress="$config.swapRouterAddress" :tokens="tokens" title="Swap tokens" />
+      -->
 
-      <!-- BasePaint -->
+      <!-- BasePaint 
       <div class="card m-2 bg-light">
         <div class="card-header bg-light">
           BasePaint
@@ -37,12 +38,15 @@
           </a>
         </div>
       </div>
+      -->
 
-      <!-- Random minted post(s) -->
+      <!-- Random minted post(s) 
       <MintedPostsWidget @closeRightSidebar="closeRightSidebar" />
+      -->
 
-      <!-- Swap tokens -->
+      <!-- Swap tokens 
       <SimpleSwapWidget routerAddress="0x1EB2Adc19eB3Df26D84427Be11F1eB1887c6631c" :tokens="tokens2" title="Trade Friend.tech keys" />
+      -->
       
     </div>
   </div>
