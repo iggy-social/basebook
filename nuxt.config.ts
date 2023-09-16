@@ -73,6 +73,7 @@ export default defineNuxtConfig({
       newsletterLink: "https://zcmp.eu/AXkd",
       nftDefaultRatio: 1, // default ratio for the NFT price bonding curve
       nftLaunchpadBondingAddress: "0xa9cfa4e8EA79537F5893f45c3B1491A2f7B54e7E", // NFT launchpad with bonding curve contract address
+      nftLaunchpadLatestItems: 4, // number of latest NFTs to show in the NFT launchpad
       nftOrbisContext: "kjzl6cwe1jw148wq50ose4mjrt17aodei2xor9kbw72b3wzvgzu7wm3jlhaghd0", // Orbis context for NFT collection pages
       orbisCategories: [ // use only alphanumeric ASCII characters for slugs! (no spaces, only dash is allowed)
         { "slug": "all", "title": "All posts", "hidden": false }, // not a real tag, just denotes the absence of a tag (always keep it here)

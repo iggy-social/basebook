@@ -159,9 +159,13 @@ export default {
       await this.parseNftsArray(fNfts, this.featuredNfts, provider);
 
       // get last NFTs
-      const lNfts = await launchpadContract.getLastNftContracts(4);
+      const lNfts = await launchpadContract.getLastNftContracts(this.$config.nftLaunchpadLatestItems);
+      const lNftsWritable = [...lNfts]; // copy the lNfts array to make it writable (for reverse() method)
 
-      await this.parseNftsArray(lNfts, this.lastNfts, provider);
+      // reverse the lNftsWritable array (to show the latest NFTs first)
+      lNftsWritable.reverse();
+      
+      await this.parseNftsArray(lNftsWritable, this.lastNfts, provider);
 
       this.waitingData = false;
     },
