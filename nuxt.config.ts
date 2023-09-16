@@ -57,6 +57,8 @@ export default defineNuxtConfig({
       chatTokenImage: "", // chat token image
       chatTokenSymbol: "", // chat token symbol or name
       domainRequiredToPost: false,
+      expiryCollections: 1000 * 60 * 60 * 24 * 7, // when local storage expires; must be in milliseconds (0 means no expiration)
+      expiryUsernames: 1000 * 60 * 60 * 24 * 7, // when local storage expires; must be in milliseconds (0 means no expiration)
       favicon: "/img/favicon.svg",
       getPostsLimit: 30, // number of posts to fetch from Orbis in the getPosts() function
       iggyPostAddress: "0x06A7Ab7Bb68b0ad6eB7688C5781E60BE6AFc658d",

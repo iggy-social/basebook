@@ -50,6 +50,7 @@ import WaitingToast from "~/components/WaitingToast";
 import ConnectWalletButton from "~/components/ConnectWalletButton";
 import { useUserStore } from '~/store/user';
 import { getDomainName } from '~/utils/domainUtils';
+import { fetchUsername, storeUsername } from '~/utils/storageUtils';
 
 export default {
   name: 'NameMintWidget',
@@ -267,7 +268,7 @@ export default {
 
         if (userDomain) {
           this.userStore.setDefaultDomain(userDomain+this.$config.tldName);
-          sessionStorage.setItem(String(this.address).toLowerCase(), userDomain+this.$config.tldName);
+          storeUsername(window, this.address, userDomain+this.$config.tldName);
         } else {
           this.userStore.setDefaultDomain(null);
         }

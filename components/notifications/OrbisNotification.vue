@@ -40,6 +40,7 @@
 import { shortenAddress } from 'vue-dapp';
 import ProfileImage from '../profile/ProfileImage.vue';
 import { getDomainName } from '~/utils/domainUtils';
+import { fetchUsername, storeUsername } from '~/utils/storageUtils';
 
 export default {
   name: 'OrbisNotification',
@@ -62,8 +63,8 @@ export default {
     if (this.notification) {
       this.authorAddress = this.notification["user_notifiying_details"]["did"].split(":")[4];
 
-      // get username from session storage
-      this.authorDomain = sessionStorage.getItem(String(this.authorAddress).toLowerCase());
+      // get username from storage
+      this.authorDomain = fetchUsername(window, this.authorAddress);
 
       if (!this.authorDomain && this.notification["user_notifiying_details"]?.profile?.username) {
         this.authorDomain = this.notification["user_notifiying_details"]["profile"]["username"];
@@ -133,8 +134,8 @@ export default {
       if (this.notification) {
         this.authorAddress = this.notification["user_notifiying_details"]["did"].split(":")[4];
 
-        // get username from session storage
-        this.authorDomain = sessionStorage.getItem(String(this.authorAddress).toLowerCase());
+        // get username from storage
+        this.authorDomain = fetchUsername(window, this.authorAddress);
 
         if (this.authorDomain) {
           return this.authorDomain;
@@ -153,7 +154,7 @@ export default {
 
       if (userDomain) {
         this.authorDomain = userDomain;
-        sessionStorage.setItem(String(this.authorAddress).toLowerCase(), userDomain+this.$config.tldName);
+        storeUsername(window, this.authorAddress, userDomain+this.$config.tldName);
       }
     },
 

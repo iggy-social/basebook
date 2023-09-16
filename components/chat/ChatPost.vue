@@ -181,6 +181,7 @@ import IggyPostMint from "~/components/minted-posts/IggyPostMint.vue";
 import MintedPostImage from '~/components/minted-posts/MintedPostImage.vue';
 import ChatQuote from "~/components/chat/ChatQuote.vue";
 import { findFirstUrl, imgParsing, imgWithoutExtensionParsing, urlParsing, youtubeParsing } from '~/utils/textUtils';
+import { fetchUsername, storeUsername } from '~/utils/storageUtils';
 
 export default {
   name: "ChatPost",
@@ -424,8 +425,8 @@ export default {
       this.authorAddress = this.post.creator_details.metadata.address;
 
       if (this.authorAddress) {
-        // check session storage if author's domain is already stored
-        const storedDomain = sessionStorage.getItem(String(this.authorAddress).toLowerCase());
+        // check storage if author's domain is already stored
+        const storedDomain = fetchUsername(window, this.authorAddress);
 
         if (storedDomain) {
           this.authorDomain = storedDomain;
@@ -448,7 +449,7 @@ export default {
 
           if (domainName) {
             this.authorDomain = domainName + this.$config.tldName;
-            sessionStorage.setItem(String(this.authorAddress).toLowerCase(), this.authorDomain);
+            storeUsername(window, this.authorAddress, this.authorDomain);
           } 
         }
       }

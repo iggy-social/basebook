@@ -247,6 +247,7 @@ import UserMintedPosts from "~/components/minted-posts/UserMintedPosts.vue";
 import ResolverAbi from "~/assets/abi/ResolverAbi.json";
 import resolvers from "~/assets/data/resolvers.json";
 import ChatFeed from '../chat/ChatFeed.vue';
+import { fetchUsername, storeUsername } from '~/utils/storageUtils';
 
 export default {
   name: "PunkProfile",
@@ -452,9 +453,9 @@ export default {
         this.uAddress = this.address;
       }
 
-      // if domain is not provided, check session storage
+      // if domain is not provided, check storage
       if (!this.domain && this.uAddress) {
-        this.domain = window.sessionStorage.getItem(String(this.uAddress).toLowerCase());
+        this.domain = fetchUsername(window, this.uAddress);
       }
 
       // set contract
@@ -476,7 +477,7 @@ export default {
 
         if (domainName) {
           this.domain = domainName + this.$config.tldName;
-          window.sessionStorage.setItem(String(this.uAddress).toLowerCase(), this.domain);
+          storeUsername(window, this.uAddress, this.domain);
         } 
       }
 
@@ -490,7 +491,7 @@ export default {
           this.uAddress = domainHolder;
         }
 
-        window.sessionStorage.setItem(String(this.uAddress).toLowerCase(), this.domain);
+        storeUsername(window, this.uAddress, this.domain);
       }
 
       await this.fetchOrbisProfile();

@@ -234,6 +234,7 @@ import ChatFeed from "~/components/chat/ChatFeed.vue";
 import ConnectWalletButton from "~/components/ConnectWalletButton.vue";
 import WaitingToast from "~/components/WaitingToast";
 import { getDomainName } from '~/utils/domainUtils';
+import { fetchCollection, fetchUsername, storeCollection, storeUsername } from '~/utils/storageUtils';
 
 export default {
   name: 'NftCollection',
@@ -402,7 +403,7 @@ export default {
 
         if (userDomain) {
           this.cAuthorDomain = userDomain;
-          sessionStorage.setItem(String(this.cAuthorAddress).toLowerCase(), userDomain+this.$config.tldName);
+          storeUsername(window, this.cAuthorAddress, userDomain+this.$config.tldName);
         }
       }
     },
@@ -438,13 +439,7 @@ export default {
     async getCollectionDetails() {
       this.waitingData = true;
 
-      let collection;
-
-      const collectionFromStorage = localStorage.getItem(String(this.cAddress+"-collection").toLowerCase());
-
-      if (collectionFromStorage) {
-        collection = JSON.parse(collectionFromStorage);
-      }
+      let collection = fetchCollection(window, this.cAddress);
 
       // fetch provider from hardcoded RPCs
       let provider = this.$getFallbackProvider(this.$config.supportedChainId);
@@ -523,8 +518,8 @@ export default {
         this.cAuthorAddress = await nftContract.owner();
       }
       
-      // get username from session storage
-      this.cAuthorDomain = sessionStorage.getItem(String(this.cAuthorAddress).toLowerCase());
+      // get username from storage
+      this.cAuthorDomain = fetchUsername(window, this.cAuthorAddress);
 
       if (!this.cAuthorDomain) {
         this.fetchUserDomain();
@@ -540,8 +535,8 @@ export default {
         mdAddress: this.mdAddress,
         name: this.cName
       };
-
-      localStorage.setItem(String(this.cAddress+"-collection").toLowerCase(), JSON.stringify(collection));
+      
+      storeCollection(window, this.cAddress, collection);
     },
 
     async sellNft() {
@@ -687,7 +682,7 @@ export default {
               name: this.cName
             };
 
-            localStorage.setItem(String(this.cAddress+"-collection").toLowerCase(), JSON.stringify(collection));
+            storeCollection(window, this.cAddress, collection);
           }
 
           this.editImageMetadataUrl = null;
