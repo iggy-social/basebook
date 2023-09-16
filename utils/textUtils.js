@@ -1,4 +1,37 @@
+export function findFirstCollectionUrl(text) {
+  // if there is an NFT collection url (from our website) in the text, return it as address string
+  // example: 
+  //   - input: https://sgb.chat/nft/collection?id=0x5923c15079AF3E14FBF96bd2fC1127633d42Ff28 
+  //   - output: 0x5923c15079AF3E14FBF96bd2fC1127633d42Ff28
+
+  const config = useRuntimeConfig();
+
+  let urlRegex;
+
+  try {
+    urlRegex = new RegExp('(https?:\\/\\/(?!.*\\.(jpg|png|jpeg|img|gif|pdf|docx))[^\\s]+)(?<![,.:;?!\\-\\"\')])', 'g');
+  } catch (error) {
+    // fallback to simplified regex (without lookbehinds) in case of an old browser or Safari
+    urlRegex = /(https?:\/\/(?!.*\.(jpg|png|jpeg|img|gif|pdf|docx))[^\s]+)/g;
+  }
+
+  const match = text.match(urlRegex);
+
+  if (match) {
+    const url = match[0];
+
+    if (url.startsWith(config.projectUrl+"/nft/collection")) {
+      return url.split("?id=")[1]; // return address string
+    }
+
+    return null;
+  }
+  
+  return null;
+}
+
 export function findFirstUrl(text) {
+  const config = useRuntimeConfig();
 
   let urlRegex;
 
@@ -22,7 +55,10 @@ export function findFirstUrl(text) {
     ) {
       // ignore youtube embeds
       return null;
-    } 
+    } else if (url.startsWith(config.projectUrl+"/nft/collection")) {
+      // ignore collection links from our website
+      return null;
+    }
 
     return url;
   }
@@ -51,7 +87,7 @@ export function imgParsing(text) {
   if (!imageRegex.test(text)) { return text };
 
   return text.replace(imageRegex, function(url) {
-    return '<div></div><img class="img-fluid rounded" style="max-height: 400px;" src="' + url + '" />';
+    return '<div></div><img class="img-fluid rounded" style="max-height: 500px;" src="' + url + '" />';
   })
 }
 
@@ -64,7 +100,7 @@ export function imgWithoutExtensionParsing(text) {
   if (!imageRegex.test(text)) { return text };
 
   return text.replace(imageRegex, function(url) {
-    return '<img class="img-fluid rounded" style="max-height: 400px;" src="' + url + '" />';
+    return '<img class="img-fluid rounded" style="max-height: 500px;" src="' + url + '" />';
   })
 }
 
@@ -73,6 +109,8 @@ export function textLengthWithoutBlankCharacters(text) {
 }
 
 export function urlParsing(text) {
+  const config = useRuntimeConfig();
+
   let urlRegex;
 
   try {
@@ -90,6 +128,9 @@ export function urlParsing(text) {
       return url;
     } else if (url.endsWith("?.img") || url.endsWith("?img")) {
       // ignore urls ending with "?.img" beause they represent images (even though they don't have an image extension)
+      return url;
+    } else if (url.startsWith(config.projectUrl+"/nft/collection")) {
+      // ignore collection links from our website
       return url;
     }
 

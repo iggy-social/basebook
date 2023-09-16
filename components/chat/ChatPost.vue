@@ -53,15 +53,15 @@
       <!-- END link preview -->
 
       <!-- New NFT collection created -->
-      <div v-if="customDataType === 'nftCollectionCreated'" class="row mt-3 mb-3">
+      <div v-if="customDataType === 'nftCollectionCreated' && collection" class="row mt-3 mb-3">
         
           <div class="card col-md-6">
-            <NuxtLink :to="'/nft/collection?id='+post.content.data.collectionAddress" class="text-decoration-none text-reset">
-              <img :src="post.content.data.collectionImage" class="card-img-top" />
+            <NuxtLink :to="'/nft/collection?id='+collection.address" class="text-decoration-none text-reset">
+              <img :src="collection?.image" class="card-img-top" />
 
               <div class="card-body bg-body rounded-bottom-3 border-end border-bottom border-start">
-                <h5 class="card-title text-break">{{ post.content.data.collectionName }}</h5>
-                <p class="card-text text-break text-reset">{{ getNftCollectionDescription }}</p>
+                <h5 class="card-title text-break">{{ collection?.name }}</h5>
+                <p v-if="collection?.description" class="card-text text-break text-reset">{{ getNftCollectionDescription }}</p>
               </div>
             </NuxtLink>
           </div>
@@ -180,8 +180,8 @@ import ProfileImage from "~/components/profile/ProfileImage.vue";
 import IggyPostMint from "~/components/minted-posts/IggyPostMint.vue";
 import MintedPostImage from '~/components/minted-posts/MintedPostImage.vue';
 import ChatQuote from "~/components/chat/ChatQuote.vue";
-import { findFirstUrl, imgParsing, imgWithoutExtensionParsing, urlParsing, youtubeParsing } from '~/utils/textUtils';
-import { fetchUsername, storeUsername } from '~/utils/storageUtils';
+import { findFirstCollectionUrl, findFirstUrl, imgParsing, imgWithoutExtensionParsing, urlParsing, youtubeParsing } from '~/utils/textUtils';
+import { fetchCollection, fetchUsername, storeCollection, storeUsername } from '~/utils/storageUtils';
 
 export default {
   name: "ChatPost",
@@ -200,6 +200,7 @@ export default {
       alreadyLiked: false,
       authorAddress: null,
       authorDomain: null,
+      collection: null,
       customDataType: null,
       firstLink: null,
       linkPreview: null,
@@ -230,6 +231,19 @@ export default {
     // check if there is custom data attached to a post
     if (this.post?.content?.data) {
       this.customDataType = this.post.content.data?.type;
+
+      this.collection = fetchCollection(window, this.post.content.data.collectionAddress);
+      
+      if (!this.collection) {
+        this.collection = {};
+      }
+
+      this.collection["address"] = this.post.content.data.collectionAddress;
+      this.collection["name"] = this.post.content.data.collectionName;
+      this.collection["description"] = this.post.content.data.collectionDescription;
+      this.collection["image"] = this.post.content.data.collectionImage;
+
+      storeCollection(window, this.post.content.data.collectionAddress, this.collection);
     }
 
     // create quote post object
@@ -268,10 +282,10 @@ export default {
         // if description length is too long, shorten it and attach "..."
         const maxLength = 100;
 
-        if (this.post.content.data.collectionDescription.length > maxLength) {
-          return this.post.content.data.collectionDescription.substring(0, maxLength) + "...";
+        if (this.collection.description.length > maxLength) {
+          return this.collection.description.substring(0, maxLength) + "...";
         } else {
-          return this.post.content.data.collectionDescription;
+          return this.collection.description;
         }
       }
 
@@ -455,6 +469,44 @@ export default {
       }
     },
 
+    async fetchCollectionData(cAddress) {
+      this.customDataType = "nftCollectionCreated";
+
+      // check storage if collection data is already stored
+      this.collection = fetchCollection(window, cAddress);
+
+      if (!this.collection) {
+        // fetch provider from hardcoded RPCs
+        let provider = this.$getFallbackProvider(this.$config.supportedChainId);
+
+        if (this.isActivated && this.chainId === this.$config.supportedChainId) {
+          // fetch provider from user's MetaMask
+          provider = this.signer;
+        }
+
+        // fetch collection data from blockchain
+        const nftInterface = new ethers.utils.Interface([
+          "function collectionPreview() public view returns (string memory)",
+          "function name() public view returns (string memory)"
+        ]);
+
+        const nftContract = new ethers.Contract(cAddress, nftInterface, provider);
+
+        const collectionName = await nftContract.name();
+        const collectionImage = await nftContract.collectionPreview();
+
+        this.collection = {
+          address: cAddress,
+          name: collectionName,
+          description: null,
+          image: collectionImage
+        }
+      } else {
+        // sometimes the collection object does not have the address property
+        this.collection["address"] = cAddress;
+      }
+    },
+
     async fetchLinkPreview() {
       if (this.$config.linkPreviews) {
         const thisAppUrl = window.location.origin;
@@ -631,6 +683,13 @@ export default {
       postText = urlParsing(postText);
 
       this.parsedText = postText.replace(/(\r\n|\n|\r)/gm, "<br/>");
+
+      // check if there is an NFT collection URL shared in the post
+      const collectionUrl = findFirstCollectionUrl(postText);
+
+      if (collectionUrl) {
+        this.fetchCollectionData(collectionUrl);
+      }
     }
   },
 

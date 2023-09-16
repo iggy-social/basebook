@@ -102,7 +102,7 @@ export default defineNuxtConfig({
       projectName: "Basebook",
       projectDescription: "Basebook is the first social NFT launchpad on Base. Create and discuss NFTs on Basebook!",
       projectTwitter: "https://twitter.com/Basebook0x",
-      projectUrl: "https://basebook.xyz",
+      projectUrl: "https://basebook.xyz", // without trailing slash!
       punkMinterAddress: "0xfc79caeAc4F44e0eBaD2bE7F42bf134806850d9e", // punk domain minter contract address
       punkNumberOfPrices: 5, // number of different prices (based on domain length), usually 1 (price()) or 5 (price1char() - price5char())
       punkTldAddress: "0x4087fb91a1fbdef05761c02714335d232a2bf3a1", // punk domain TLD address

@@ -259,7 +259,9 @@ export default {
         let collection = fetchCollection(window, inputArray[i]);
         
         if (!collection) {
-          collection = {};
+          collection = {
+            address: inputArray[i]
+          };
         }
 
         // get collection name
