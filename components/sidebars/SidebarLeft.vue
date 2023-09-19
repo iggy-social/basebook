@@ -29,7 +29,7 @@
         <ul class="nav nav-pills flex-column">
           <li class="nav-item p-1" @click="closeLeftSidebar">
             <NuxtLink class="nav-link" :class="$route.path === '/' ? 'active' : ''" aria-current="page" to="/">
-              <i class="bi bi-rocket-takeoff"></i> NFT Launchpad
+              <i class="bi bi-rocket-takeoff"></i> NFT Bookshelf
             </NuxtLink>
           </li>
 

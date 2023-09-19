@@ -24,7 +24,7 @@
     </p>
 
     <h3 class="d-flex flex-row flex-wrap mt-3">
-      <div class="mb-3 me-auto">NFT Launchpad</div>
+      <div class="mb-3 me-auto">NFT Bookshelf</div>
       
       <div class="mb-3">
         <NuxtLink class="btn btn-outline-primary btn-sm" to="/nft/create">
