@@ -70,7 +70,7 @@ export default defineNuxtConfig({
       marketplaceCollectionUrl: "https://opensea.io/collection/basebook-posts/",
       marketplaceNftItemUrl: "https://opensea.io/assets/base/0x06A7Ab7Bb68b0ad6eB7688C5781E60BE6AFc658d/", // url (append nft id to it)
       maxImageUploadSizeMb: 1, // max image upload size in MB
-      newsletterLink: "https://zcmp.eu/AXkd",
+      newsletterLink: "https://paragraph.xyz/@iggy?modal=subscribe",
       nftDefaultRatio: 1, // default ratio for the NFT price bonding curve
       nftLaunchpadBondingAddress: "0xa9cfa4e8EA79537F5893f45c3B1491A2f7B54e7E", // NFT launchpad with bonding curve contract address
       nftLaunchpadLatestItems: 12, // number of latest NFTs to show in the NFT launchpad
