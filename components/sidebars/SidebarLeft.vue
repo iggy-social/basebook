@@ -1,6 +1,6 @@
 <template>
 <div class="col col-lg-auto px-0 mt-1">
-  <div id="sidebar1" class="collapse collapse-horizontal sticky-lg-top">
+  <div id="sidebar1" class="collapse collapse-horizontal" :class="$config.sidebarLeftSticky ? 'sticky-lg-top' : ''">
     <div class="sidebar-nav list-group border-0 rounded-0 text-sm-start min-vh-100">
       <div class="card m-2 p-2 bg-light">
 
@@ -15,24 +15,70 @@
             />
           </NuxtLink>
 
-          <h6 class="mt-3">
-            {{ userStore.getDefaultDomain }}
+          <h6 class="mt-3" v-if="userStore.getDefaultDomain">
+            {{ getTextWithoutBlankCharacters(userStore.getDefaultDomain) }}
           </h6>
 
+          <!-- Chat tokens -->
+          <!--
           <button v-if="userStore.getChatTokenBalanceWei > 0 && $config.chatTokenAddress" class="btn btn-outline-primary btn-sm mt-2 mb-2 disabled">
             {{ userStore.getChatTokenBalance }} {{ $config.chatTokenSymbol }}
+          </button>
+          -->
+
+          <!-- Activity Points -->
+          <button 
+            v-if="userStore.getCurentUserActivityPoints > 0 && $config.activityPointsAddress" 
+            class="btn btn-outline-primary btn-sm mt-2 mb-2" 
+            @click="fetchActivityPoints"
+          >
+            {{ userStore.getCurentUserActivityPoints }} AP
           </button>
 
           <hr />
         </div>
 
         <ul class="nav nav-pills flex-column">
+
           <li class="nav-item p-1" @click="closeLeftSidebar">
             <NuxtLink class="nav-link" :class="$route.path === '/' ? 'active' : ''" aria-current="page" to="/">
               <i class="bi bi-rocket-takeoff"></i> NFT Bookshelf
             </NuxtLink>
           </li>
 
+          <!-- Chat channels 
+          <ul class="list-group">
+            <NuxtLink 
+              to="/"
+              class="list-group-item cursor-pointer hover-color bg-light border-0" 
+              :class="(chatStore.getSelectedTagIndex === index && $route.path === '/') ? 'active' : ''"
+              v-for="(tagObject, index) in filteredCategories"
+              :key="tagObject.slug" 
+              @click="selectTagIndex(index)"
+            >
+              {{ tagObject.title }}
+            </NuxtLink>
+          </ul>
+
+          <hr />
+          -->
+
+          <!-- Home 
+          <li class="nav-item p-1" @click="closeLeftSidebar">
+            <NuxtLink class="nav-link" :class="$route.path === '/' ? 'active' : ''" aria-current="page" to="/">
+              <i class="bi bi-house"></i> Home
+            </NuxtLink>
+          </li>
+          -->
+
+          <!-- NFT Launchpad 
+          <li class="nav-item p-1" @click="closeLeftSidebar" v-if="$config.nftLaunchpadBondingAddress && $config.showFeatures.nftLaunchpad">
+            <NuxtLink class="nav-link" :class="$route.path.startsWith('/nft') ? 'active' : ''" aria-current="page" to="/nft">
+              <i class="bi bi-rocket-takeoff"></i> NFT Launchpad
+            </NuxtLink>
+          </li>
+          -->
+          
           <!-- Chat -->
           <li class="nav-item p-1" @click="closeLeftSidebar">
             <NuxtLink class="nav-link" :class="$route.path.startsWith('/chat') ? 'active' : ''" aria-current="page" to="/chat">
@@ -40,11 +86,14 @@
             </NuxtLink>
           </li>
           
+          <!-- Profile -->
           <li v-if="isActivated" class="nav-item p-1" @click="closeLeftSidebar">
             <NuxtLink class="nav-link" :class="$route.path.startsWith('/profile') ? 'active' : ''" aria-current="page" to="/profile">
               <i class="bi bi-person"></i> Profile
             </NuxtLink>
           </li>
+
+          <!-- Notifications -->
           <li v-if="isActivated" class="nav-item p-1" @click="closeLeftSidebar">
             <NuxtLink class="nav-link" :class="$route.path.startsWith('/notifications') ? 'active' : ''" aria-current="page" to="/notifications">
               <i class="bi bi-bell"></i> Notifications
@@ -58,53 +107,114 @@
             </NuxtLink>
           </li>
 
-          <li class="nav-item p-1" @click="closeLeftSidebar" v-if="$config.swapRouterAddress">
-            <NuxtLink class="nav-link" :class="$route.path.startsWith('/swap') ? 'active' : ''" aria-current="page" to="/swap">
-              <i class="bi bi-arrow-down-up"></i> Swap
+          <!-- Activity Points -->
+          <li class="nav-item p-1" @click="closeLeftSidebar" v-if="$config.showFeatures.activityPoints && $config.activityPointsAddress">
+            <NuxtLink class="nav-link" :class="$route.path.startsWith('/activity-points') ? 'active' : ''" aria-current="page" to="/activity-points">
+              <i class="bi bi-award"></i> Activity Points
             </NuxtLink>
           </li>
-          <li class="nav-item p-1" @click="closeLeftSidebar" v-if="$config.airdropClaimDomainsAddress || $config.airdropPostMintersAddress">
-            <NuxtLink class="nav-link" :class="$route.path.startsWith('/airdrop') ? 'active' : ''" aria-current="page" to="/airdrop">
-              <i class="bi bi-gift"></i> Airdrop
+
+          <!-- Send tokens -->
+          <li class="nav-item p-1" @click="closeLeftSidebar" v-if="$config.showFeatures.sendTokens">
+            <NuxtLink class="nav-link" :class="$route.path.startsWith('/send-tokens') ? 'active' : ''" aria-current="page" to="/send-tokens">
+              <i class="bi bi-send"></i> Send tokens
             </NuxtLink>
           </li>
-          <li class="nav-item p-1" @click="closeLeftSidebar" v-if="$config.stakingContractAddress">
+
+          <!-- Stake & Earn -->
+          <li class="nav-item p-1" @click="closeLeftSidebar" v-if="$config.stakingContractAddress && $config.showFeatures.stake">
             <NuxtLink class="nav-link" :class="$route.path.startsWith('/stake') ? 'active' : ''" aria-current="page" to="/stake">
               <i class="bi bi-cash-stack"></i> Stake & Earn
             </NuxtLink>
           </li>
+
+          <!-- Swap -->
+          <li class="nav-item p-1" @click="closeLeftSidebar" v-if="$config.swapRouterAddress && $config.showFeatures.swap">
+            <NuxtLink class="nav-link" :class="$route.path.startsWith('/swap') ? 'active' : ''" aria-current="page" to="/swap">
+              <i class="bi bi-arrow-down-up"></i> Swap
+            </NuxtLink>
+          </li>
+          
+          <!-- Friend Keys -->
+          <li class="nav-item p-1" @click="closeLeftSidebar" v-if="$config.keysAddress && $config.showFeatures.friendKeys">
+            <NuxtLink class="nav-link" :class="$route.path.startsWith('/keys') ? 'active' : ''" aria-current="page" to="/keys">
+              <i class="bi bi-key"></i> Friend Keys
+            </NuxtLink>
+          </li>
+
+          <!-- Airdrop -->
+          <li class="nav-item p-1" @click="closeLeftSidebar" v-if="($config.airdropClaimDomainsAddress || $config.airdropApAddress) && $config.showFeatures.airdrop">
+            <NuxtLink class="nav-link" :class="$route.path.startsWith('/airdrop') ? 'active' : ''" aria-current="page" to="/airdrop">
+              <i class="bi bi-gift"></i> Airdrop
+            </NuxtLink>
+          </li>
+
+          <!-- Governance -->
+          <li class="nav-item p-1" v-if="$config.showFeatures.governance" @click="closeLeftSidebar">
+            <a class="nav-link" :href="$config.governanceUrl" target="_blank">
+              <i class="bi bi-box2"></i> Governance <small><i class="bi bi-box-arrow-up-right ms-1"></i></small>
+            </a>
+          </li>
+
+          <!-- About -->    
           <li class="nav-item p-1" @click="closeLeftSidebar">
             <NuxtLink class="nav-link" :class="$route.path.startsWith('/about') ? 'active' : ''" aria-current="page" to="/about">
               <i class="bi bi-patch-question"></i> About
             </NuxtLink>
           </li>
-          <li class="nav-item p-1" @click="closeLeftSidebar">
-            <a class="nav-link cursor-pointer" href="https://zealy.io/c/basebook/questboard" target="_blank">
-              <i class="bi bi-fire"></i> Quests 
-              <i class="bi bi-box-arrow-up-right ms-1"></i>
-            </a>
-          </li>
-          <li class="nav-item p-1" @click="closeLeftSidebar">
-            <a class="nav-link cursor-pointer" href="https://id.basebook.xyz" target="_blank">
-              <i class="bi bi-person-vcard"></i> Basebook ID 
-              <i class="bi bi-box-arrow-up-right ms-1"></i>
-            </a>
-          </li>
           
+
+          <!-- More 
+          <li class="nav-item p-1 dropdown">
+            <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">
+              <i class="bi bi-three-dots"></i> More
+            </a>
+
+            <ul class="dropdown-menu">
+
+              <li class="pt-1 pb-1" @click="closeLeftSidebar" v-if="$config.airdropClaimDomainsAddress || $config.airdropApAddress">
+                <NuxtLink class="dropdown-item" :class="$route.path.startsWith('/airdrop') ? 'active' : ''" aria-current="page" to="/airdrop">
+                  <i class="bi bi-gift"></i> Airdrop
+                </NuxtLink>
+              </li>
+
+              <li class="pt-1 pb-1" @click="closeLeftSidebar">
+                <NuxtLink class="dropdown-item" :class="$route.path.startsWith('/profile') ? 'active' : ''" aria-current="page" to="/profile">
+                  <i class="bi bi-person"></i> Profile
+                </NuxtLink>
+              </li>
+
+              <li class="pt-1 pb-1">
+                <NuxtLink class="dropdown-item" :class="$route.path.startsWith('/notifications') ? 'active' : ''" aria-current="page" to="/notifications">
+                  <i class="bi bi-bell"></i> Notifications
+
+                  <span 
+                    class="badge text-bg-secondary" 
+                    v-if="!notificationsStore.getLoadingNotifications && notificationsStore.getUnreadNotificationsCount > 0">
+                    {{ notificationsStore.getUnreadNotificationsCount }}
+                  </span>
+
+                </NuxtLink>
+              </li>
+
+              <li class="pt-1 pb-1" @click="closeLeftSidebar">
+                <a class="dropdown-item" href="https://snapshot.org/#/sgbchat.eth" target="_blank">
+                  <i class="bi bi-box2"></i> Governance <small><i class="bi bi-box-arrow-up-right ms-1"></i></small>
+                </a>
+              </li>
+
+              <li class="pt-1 pb-1" @click="closeLeftSidebar">
+                <NuxtLink class="dropdown-item" :class="$route.path.startsWith('/about') ? 'active' : ''" aria-current="page" to="/about">
+                  <i class="bi bi-patch-question"></i> About
+                </NuxtLink>
+              </li>
+
+            </ul>
+          </li>
+          -->
+
         </ul>
       </div>
-
-      <!--
-      <div v-if="$config.newsletterLink" class="card m-2 bg-light">
-        <div class="card-header bg-light">{{ $config.projectName }} Newsletter</div>
-        <div class="card-body sidebar-card-body">
-          <a class="btn btn-outline-primary mt-2 mb-2" target="_blank" :href="$config.newsletterLink">
-            Join our newsletter!
-            <i class="bi bi-box-arrow-up-right ms-1"></i>
-          </a>
-        </div>
-      </div>
-      -->
       
    </div>
   </div>
@@ -113,10 +223,14 @@
 
 <script>
 import { useEthers } from 'vue-dapp';
+import { useToast } from "vue-toastification/dist/index.mjs";
 import { useNotificationsStore } from '~/store/notifications';
+import { useChatStore } from '~/store/chat';
 import { useSidebarStore } from '~/store/sidebars';
 import { useUserStore } from '~/store/user';
 import ProfileImage from "~/components/profile/ProfileImage.vue";
+import { getActivityPoints } from '~/utils/balanceUtils';
+import { getTextWithoutBlankCharacters } from '~/utils/textUtils';
 
 export default {
   name: "SidebarLeft",
@@ -125,24 +239,65 @@ export default {
   components: {
     ProfileImage
   },
+
+  computed: {
+
+    filteredCategories() {
+      let cats = [];
+      
+      for (let i = 0; i < this.$config.orbisCategories.length; i++) {
+        // exclude categories that are marked as hidden
+        if (this.$config.orbisCategories[i].hidden === false) {
+          cats.push({
+            slug: this.$config.orbisCategories[i].slug,
+            title: this.$config.orbisCategories[i].title
+          });
+        }
+      }
+
+      return cats;
+    },
+    
+  },
   
   methods: {
+    getActivityPoints,
+
     closeLeftSidebar() {
       if (this.isMobile) {
         this.lSidebar.hide();
         this.sidebarStore.setLeftSidebar(false);
         this.sidebarStore.setMainContent(true);
       }
+    },
+
+    async fetchActivityPoints() {
+      if (this.$config.activityPointsAddress && this.address) {
+        this.toast.info("Refreshing activity points...", { timeout: 2000 });
+
+        const activityPoints = await this.getActivityPoints(this.address);
+
+        this.userStore.setCurrentUserActivityPoints(activityPoints);
+      }
+    },
+
+    selectTagIndex(index) {
+      this.chatStore.setSelectedTagIndex(index);
+      this.closeLeftSidebar();
     }
   },
 
   setup() {
-    const sidebarStore = useSidebarStore();
     const { address, isActivated } = useEthers();
+
+    const toast = useToast();
+
+    const chatStore = useChatStore();
     const notificationsStore = useNotificationsStore();
+    const sidebarStore = useSidebarStore();
     const userStore = useUserStore();
 
-    return { address, isActivated, notificationsStore, sidebarStore, userStore }
+    return { address, chatStore, isActivated, notificationsStore, sidebarStore, toast, userStore }
   },
 }
 </script>

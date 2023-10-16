@@ -2,7 +2,7 @@ import { ethers } from "ethers";
 
 export async function getDomainName(userAddress, signer) {
   const config = useRuntimeConfig();
-
+  
   let provider = signer;
 
   if (!provider) {

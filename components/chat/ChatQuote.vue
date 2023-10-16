@@ -54,6 +54,7 @@ import { useUserStore } from '~/store/user';
 import ProfileImage from "~/components/profile/ProfileImage.vue";
 import { imgParsing, imgWithoutExtensionParsing, urlParsing, youtubeParsing } from '~/utils/textUtils';
 import { fetchUsername, storeUsername } from '~/utils/storageUtils';
+import { getTextWithoutBlankCharacters } from '~/utils/textUtils';
 
 export default {
   name: "ChatQuote",
@@ -92,7 +93,7 @@ export default {
 
     showDomainOrAddressOrAnon() {
       if (this.authorDomain) {
-        return this.authorDomain;
+        return getTextWithoutBlankCharacters(this.authorDomain);
       } else if (this.post.address) {
         return this.shortenAddress(this.post.address);
       } else {

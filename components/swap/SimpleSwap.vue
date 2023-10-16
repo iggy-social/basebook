@@ -88,7 +88,7 @@
       v-if="outputTokenAmount && !bothTokensAreNativeCoinOrWrappedTokenOrSame"
     >
       <em>
-        You will get at least {{ outputTokenAmount }} {{ outputToken.symbol }} ({{ outputToken.name }}), but probably more 
+        You will get at least {{ outputTokenAmount }} {{ outputToken.symbol }}, but probably more 
         ({{ siteStore.getSlippage }}% slippage).
       </em>
     </small>
@@ -106,7 +106,7 @@
         class="btn btn-outline-primary" 
         type="button"
       >
-        Buy {{ outputToken?.symbol }}
+        Swap tokens
       </button>
 
       <!-- Approve token button -->
@@ -139,7 +139,7 @@
         :data-bs-target="'#swapTokensModal'+swapId"
         @click="getOutputAmount"
       >
-      Buy {{ outputToken?.symbol }}
+        Swap tokens
       </button>
 
       <!-- Swap tokens modal -->
@@ -186,18 +186,10 @@
 
     </div>
 
-    <p class="text-center mt-5" v-if="poweredBy">
+    <p class="text-center mt-4" v-if="poweredBy">
       <small>
-        <em>Powered by 
-          <a href="https://baseswap.fi/" target="_blank" class="text-reset text-decoration-none">{{ poweredBy }}</a>.
-        </em>
+        <em>Powered by {{ poweredBy }}.</em>
       </small>
-
-      <br />
-      
-      <a href="https://baseswap.fi/" target="_blank">
-        <img src="@/assets/img/other/baseswap.png" style="width: 45px;" class="mt-2" alt="BaseSwap">
-      </a>
     </p>
 
   </div>
@@ -244,10 +236,10 @@ export default {
   },
 
   mounted() {
-    this.tokenList = this.tokens.tokens;
+    this.tokenList = this.getFilteredTokens(this.tokens.tokens);
 
-    this.selectInputToken(this.tokens.tokens[0]);
-    this.selectOutputToken(this.tokens.tokens[1]);
+    this.selectInputToken(this.tokenList[0]);
+    this.selectOutputToken(this.tokenList[1]);
 
     if (this.outputPlaceholder) {
       this.outputText = this.outputPlaceholder;
@@ -378,6 +370,11 @@ export default {
 
     changeInputTokenAllowance(newAllowance) {
       this.inputTokenAllowance = Number(newAllowance);
+    },
+
+    getFilteredTokens(tokensArray) {
+      // only include tokens that have swap: true
+      return tokensArray.filter(token => token.swap);
     },
 
     // custom

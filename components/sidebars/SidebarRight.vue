@@ -6,47 +6,38 @@
       <!-- Mint/register a domain name -->
       <NameMintWidget />
 
-      <!-- Swap tokens 
-      <SimpleSwapWidget v-if="$config.swapRouterAddress" :routerAddress="$config.swapRouterAddress" :tokens="tokens" title="Swap tokens" />
+      <!-- Playlist -->
+      <div class="card m-2 bg-light" v-if="$config.showFeatures.spotify">
+        <div class="card-header bg-light">{{ $config.projectName }} Playlist</div>
+        <div class="card-body sidebar-card-body">
+          <iframe style="border-radius:12px" :src="'https://open.spotify.com/embed/playlist/'+$config.spotifyPlaylistId+'?utm_source=generator&theme=0'" width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+        </div>
+      </div>
+
+      <!-- Keys list 
+      <KeysListWidget v-if="$config.keysAddress && $config.showFeatures.friendKeys" />
       -->
 
-      <!-- BasePaint 
-      <div class="card m-2 bg-light">
-        <div class="card-header bg-light">
-          BasePaint
-        </div>
+      <!-- Swap tokens -->
+      <SimpleSwapWidget 
+        v-if="$config.swapRouterAddress && $config.showFeatures.swap" 
+        :routerAddress="$config.swapRouterAddress" 
+        :tokens="tokens" 
+        title="Swap tokens" />
 
+      <!-- Random minted post(s) -->
+      <MintedPostsWidget v-if="$config.showFeatures.randomMintedPosts" @closeRightSidebar="closeRightSidebar" />
+
+      <!-- Newsletter -->
+      <div v-if="$config.newsletterLink && $config.showFeatures.newsletter" class="card m-2 bg-light">
+        <div class="card-header bg-light">{{ $config.projectName }} Newsletter</div>
         <div class="card-body sidebar-card-body">
-          <div class="row">
-            <p>Paint together. Mint daily.</p>
-
-            <a href="https://basepaint.xyz/?ref=basebook.xyz" target="_blank">
-              <img class="img-fluid rounded" src="https://bafybeihwt32qqr6vxeggfyv7imnzv3fob5lxtwaajjahnoq54avetlgiwq.ipfs.w3s.link/basepaint.jpg" />
-            </a>
-          </div>
-        </div>
-
-        <div class="card-footer bg-light text-body-secondary text-center">
-          <a href="https://basepaint.xyz/?ref=basebook.xyz" class="btn btn-outline-primary mb-3 me-2" target="_blank">
-            Draw
-            <i class="bi bi-box-arrow-up-right ms-1"></i>
-          </a>
-
-          <a href="https://basepaint.xyz/mint" class="btn btn-outline-primary mb-3" target="_blank">
-            Mint
+          <a class="btn btn-outline-primary mt-2 mb-2" target="_blank" :href="$config.newsletterLink">
+            Join our newsletter!
             <i class="bi bi-box-arrow-up-right ms-1"></i>
           </a>
         </div>
       </div>
-      -->
-
-      <!-- Random minted post(s) 
-      <MintedPostsWidget @closeRightSidebar="closeRightSidebar" />
-      -->
-
-      <!-- Swap tokens 
-      <SimpleSwapWidget routerAddress="0x1EB2Adc19eB3Df26D84427Be11F1eB1887c6631c" :tokens="tokens2" title="Trade Friend.tech keys" />
-      -->
       
     </div>
   </div>
@@ -55,17 +46,18 @@
 
 <script>
 import tokens from '~/assets/data/tokens.json';
-import tokens2 from '~/assets/data/tokens2.json';
 import { useSidebarStore } from '~/store/sidebars';
 import MintedPostsWidget from '~/components/minted-posts/MintedPostsWidget.vue';
 import NameMintWidget from '~/components/names/NameMintWidget.vue';
 import SimpleSwapWidget from '~/components/swap/SimpleSwapWidget.vue';
+import KeysListWidget from '~/components/keys/KeysListWidget.vue';
 
 export default {
     name: "SidebarRight",
     props: ["rSidebar", "isMobile"],
 
     components: { 
+      KeysListWidget,
       MintedPostsWidget,
       NameMintWidget,
       SimpleSwapWidget
@@ -83,7 +75,7 @@ export default {
 
     setup() {
         const sidebarStore = useSidebarStore();
-        return { sidebarStore, tokens, tokens2 };
+        return { sidebarStore, tokens };
     }
 }
 </script>

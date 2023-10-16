@@ -1,7 +1,7 @@
 <template>
   <Head>
-    <Title>Swap | {{ $config.projectMetadataTitle }}</Title>
-    <Meta property="og:title" :content="'Token Swap | ' + $config.projectMetadataTitle" />
+    <Title>Send tokens | {{ $config.projectMetadataTitle }}</Title>
+    <Meta property="og:title" :content="'Send tokens | ' + $config.projectMetadataTitle" />
   </Head>
 
   <div class="scroll-500">
@@ -11,15 +11,11 @@
           <i class="bi bi-arrow-left-circle cursor-pointer" @click="$router.back()"></i>
         </p>
 
-        <h3 class="mt-3">Token Swap</h3>
+        <h3 class="mt-3">Send tokens</h3>
         
         <div class="d-flex justify-content-center mt-5">
           <div class="col-12 col-lg-8">
-            <SimpleSwap 
-              :routerAddress="$config.swapRouterAddress" 
-              swapId="SwapPage1" 
-              :tokens="tokens"
-            />
+            <SendTokensComponent :tokens="tokens" :recipient="getQueryRecipient" />
           </div>
         </div>
         
@@ -30,13 +26,21 @@
 
 <script>
 import tokens from '~/assets/data/tokens.json';
-import SimpleSwap from '~/components/swap/SimpleSwap.vue';
+import SendTokensComponent from '~/components/send-tokens/SendTokensComponent.vue';
 
 export default {
-  name: 'Swap',
+  name: 'SendTokens',
 
   components: {
-    SimpleSwap,
+    SendTokensComponent,
+  },
+
+  computed: {
+    getQueryRecipient() {
+      if (!this.$route.query.to) return null;
+
+      return this.$route.query.to; // ?to=techie
+    },
   },
 
   setup() {

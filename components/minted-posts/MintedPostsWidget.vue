@@ -14,7 +14,7 @@
   </div>
 
   <div class="card-footer bg-light text-body-secondary text-center">
-    <a :href="$config.marketplaceCollectionUrl" class="btn btn-outline-primary mb-3" target="_blank">
+    <a :href="$config.marketplacePostNftUrl" class="btn btn-outline-primary mb-3" target="_blank">
       See all minted posts
       <i class="bi bi-box-arrow-up-right ms-1"></i>
     </a>
@@ -47,6 +47,14 @@ export default {
   },
 
   computed: {
+    getImageColumnWidth() {
+      if (this.$config.randomPostsNumber === 1) {
+        return "col-12"
+      } else {
+        return "col-12 mt-4"
+      }
+    },
+
     getWidgetTitle() {
       if (this.$config.randomPostsNumber === 1) {
         return "Random Minted Post"
@@ -54,14 +62,6 @@ export default {
         return "Random Minted Posts"
       }
     },
-
-    getImageColumnWidth() {
-      if (this.$config.randomPostsNumber === 1) {
-        return "col-12"
-      } else {
-        return "col-12 mt-4"
-      }
-    }
   },
 
   methods: {

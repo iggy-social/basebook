@@ -1,8 +1,8 @@
 <template>
-  <button data-bs-toggle="modal" data-bs-target="#imageUploadModal" :class="cls">
-    <i :class="getIcon"></i> 
+  <a data-bs-toggle="modal" data-bs-target="#imageUploadModal" :class="cls">
+    <i v-if="getIcon" :class="getIcon"></i> 
     {{ getButtonText }}
-  </button>
+  </a>
   
   <!-- Modal -->
   <div class="modal fade" id="imageUploadModal" tabindex="-1" aria-labelledby="imageUploadModalLabel" aria-hidden="true">

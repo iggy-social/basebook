@@ -12,33 +12,25 @@
         </div>
 
         <div class="col-md-9 mt-3">
-          <h3 class="mb-3">{{ domain }}</h3>
+          <h3 v-if="domain" class="mb-3">{{ getTextWithoutBlankCharacters(domain) }}</h3>
 
           <!-- Data -->
-          <div v-if="uAddress" class="mt-4 muted-text">
+          <div class="mt-4 muted-text" style="font-size: 14px;">
 
             <p class="me-4">
               <i class="bi bi-wallet me-1"></i>
               {{ balanceEth }} {{ $config.tokenSymbol }}
             </p>
 
-            <p v-if="$config.chatTokenAddress" class="me-4">
+            <p class="me-4" v-if="$config.chatTokenAddress">
               <i class="bi bi-wallet me-1"></i>
               {{ balanceChatToken }} {{ $config.chatTokenSymbol }}
             </p>
 
             <p class="me-4">
               <i class="bi bi-box-arrow-up-right me-2"></i>
-              <a :href="$config.blockExplorerBaseUrl+'/address/'+uAddress" target="_blank">
+              <a :href="$config.blockExplorerBaseUrl+'/address/'+uAddress" target="_blank" style="text-decoration: none;">
                 {{ shortenAddress(uAddress) }}
-              </a>
-            </p>
-
-            <p class="me-4">
-              <i class="bi bi-card-list me-1"></i>
-              Manage your .basebook IDs 
-              <a target="_blank" href="https://id.basebook.xyz">
-                here <i class="bi bi-box-arrow-up-right me-2"></i>
               </a>
             </p>
           </div>
@@ -82,9 +74,16 @@
           </div>
           <!-- END Buttons -->
 
+          <!-- Send tokens to user -->
+          <NuxtLink v-if="domain && !isCurrentUser && $config.showFeatures.sendTokens" class="btn btn-primary mt-2" :to="'/send-tokens/?to='+domain">
+            <i class="bi bi-send"></i>
+            Send tokens to {{ domain }}
+          </NuxtLink>
+          <!-- END Send tokens to user -->
+
         </div>
       </div>
-
+      
       <!--
       <p class="text-break mt-3">Followers: {{ followers }}</p>
       <p class="text-break mt-3">Following: {{ following }}</p>
@@ -213,7 +212,7 @@
             class="nav-link" 
             :class="currentTab === 'mints' ? 'active' : ''" 
             @click="changeCurrentTab('mints')" 
-          >Post NFTs</button>
+          >Mints</button>
         </li>
       </ul>
       <!-- END Tabs Navigation -->
@@ -248,6 +247,7 @@ import ResolverAbi from "~/assets/abi/ResolverAbi.json";
 import resolvers from "~/assets/data/resolvers.json";
 import ChatFeed from '../chat/ChatFeed.vue';
 import { fetchUsername, storeUsername } from '~/utils/storageUtils';
+import { getTextWithoutBlankCharacters } from '~/utils/textUtils';
 
 export default {
   name: "PunkProfile",
@@ -316,6 +316,14 @@ export default {
         return Number(bal).toFixed(2)
       } else {
         return Number(bal).toFixed(4)
+      }
+    },
+
+    getOrbisContext() {
+      if (this.$config.orbisTest) {
+        return this.$config.orbisTestContext;
+      } else {
+        return this.$config.orbisContext;
       }
     },
 

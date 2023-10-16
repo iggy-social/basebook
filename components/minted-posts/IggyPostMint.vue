@@ -99,11 +99,13 @@ export default {
       });
 
       if (sanitizedText.length > 183) {
-        this.textPreview = sanitizedText.replace(/[^\x00-\x7F]/g, "").substring(0, 180) + "...";
+        //this.textPreview = sanitizedText.replace(/[^\x00-\x7F]/g, "").substring(0, 180) + "..."; // uncomment if you want to remove non-ascii characters (e.g. emojis)
+        this.textPreview = sanitizedText.substring(0, 180) + "...";
       } else if (sanitizedText.length === 0) {
         this.textPreview = "";
       } else {
-        this.textPreview = sanitizedText.replace(/[^\x00-\x7F]/g, "");
+        //this.textPreview = sanitizedText.replace(/[^\x00-\x7F]/g, ""); // uncomment if you want to remove non-ascii characters (e.g. emojis)
+        this.textPreview = sanitizedText;
       }
 
       if (textLengthWithoutBlankCharacters(sanitizedText) === 0) {
@@ -196,13 +198,13 @@ export default {
 
             // make a post about the minting
             if (this.makePost && this.userStore.getIsConnectedToOrbis) {
-              const iggyEnumInterface = new ethers.utils.Interface([
+              const iggyStatsInterface = new ethers.utils.Interface([
                 "function getMintedPostIdsArray(address) external view returns (uint256[] memory)"
               ]);
 
-              const iggyEnumContract = new ethers.Contract(this.$config.iggyPostEnumerationAddress, iggyEnumInterface, this.signer);
+              const iggyStatsContract = new ethers.Contract(this.$config.iggyPostStatsAddress, iggyStatsInterface, this.signer);
 
-              const mintedIds = await iggyEnumContract.getMintedPostIdsArray(this.address);
+              const mintedIds = await iggyStatsContract.getMintedPostIdsArray(this.address);
               const lastMintedId = mintedIds[mintedIds.length - 1];
 
               const options = {

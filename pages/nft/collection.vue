@@ -14,8 +14,8 @@
 
   <div class="card border">
     <div class="card-body">
-      <p class="fs-3" @click="$router.push({ path: '/nft' })">
-        <i class="bi bi-arrow-left-circle cursor-pointer"></i>
+      <p class="fs-3">
+        <i @click="$router.push({ path: '/nft' })" class="bi bi-arrow-left-circle cursor-pointer"></i>
       </p>
 
       <h3 class="mb-3 mt-3" v-if="!cName">NFT Collection Details</h3>
@@ -30,11 +30,47 @@
         <div class="col-md-5 text-center mb-3">
           <img :src="cImage" class="img-fluid img-thumbnail rounded col-12" />
 
-          <div v-if="isCurrentAddressOwner" class="d-flex justify-content-center mt-3">
-            <button class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#changeImageModal">
-              Edit image
+          <div class="dropdown mt-3">
+            <button class="btn btn-outline-primary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+              Actions
             </button>
+            <ul class="dropdown-menu">
+
+              <li v-if="isCurrentAddressOwner">
+                <span class="dropdown-item cursor-pointer" data-bs-toggle="modal" data-bs-target="#changeDescriptionModal">
+                  Change description
+                </span>
+              </li>
+
+              <li v-if="isCurrentAddressOwner">
+                <span class="dropdown-item cursor-pointer" data-bs-toggle="modal" data-bs-target="#changeCollectionPreviewModal">
+                  Change collection preview image
+                </span>
+              </li>
+
+              <li v-if="isCurrentAddressOwner && cType == 0">
+                <span class="dropdown-item cursor-pointer" data-bs-toggle="modal" data-bs-target="#addImageToCollectionModal">
+                  Add new image to collection
+                </span>
+              </li>
+
+              <li v-if="isCurrentAddressOwner && cType == 0">
+                <span class="dropdown-item cursor-pointer" data-bs-toggle="modal" data-bs-target="#removeImageFromCollectionModal">
+                  Remove image from collection
+                </span>
+              </li>
+
+              <li v-if="isCurrentAddressOwner">
+                <span class="dropdown-item cursor-pointer" data-bs-toggle="modal" data-bs-target="#changeNftTypeModal">
+                  Change collection type
+                </span>
+              </li>
+
+              <li><span class="dropdown-item cursor-pointer" @click="getCollectionDetails(true)">Refresh metadata</span></li>
+
+            </ul>
           </div>
+
         </div>
 
         <div class="col-md-7">
@@ -65,7 +101,16 @@
               <a :href="$config.blockExplorerBaseUrl+'/address/'+cAddress" target="_blank" style="text-decoration: none;">
                 {{ shortenAddress(cAddress) }}
               </a>
-              <span v-if="getUsernameOrShortAddress"> by {{ getUsernameOrShortAddress }}</span>
+              <span v-if="getUsernameOrShortAddress"> by 
+                <NuxtLink :to="'/profile/?id='+String(getUsernameOrFullAddress)">{{getUsernameOrShortAddress}}</NuxtLink>
+              </span>
+            </p>
+
+            <p class="me-4">
+              <i class="bi bi-box-arrow-up-right me-2"></i>
+              <a :href="$config.marketplaceNftCollectionBaseUrl+cAddress" target="_blank" style="text-decoration: none;">
+                See on NFT marketplace
+              </a>
             </p>
           </div>
           <!-- END Data -->
@@ -135,95 +180,20 @@
     :orbisContext="$config.nftOrbisContext+':'+cAddress" 
   />
 
-  <!-- Change Image Modal -->
-  <div class="modal fade" id="changeImageModal" tabindex="-1" aria-labelledby="changeImageModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h1 class="modal-title fs-5" id="changeImageModalLabel">Change Image or Metadata URL</h1>
-          <button id="closeChangeImageModal" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
+  <!-- Add image modal -->
+  <AddImageToCollectionModal :cAddress="cAddress" :mdAddress="mdAddress" />
 
-        <div class="modal-body">
-          <p><strong>Pick one of these options:</strong></p>
+  <!-- Change collection preview image modal -->
+  <ChangeCollectionPreviewModal :cAddress="cAddress" :mdAddress="mdAddress" @saveCollection="saveCollection" />
 
-          <div class="dropdown">
-            <button class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-              {{ editImageOptions[editImageChoice].description }}
-            </button>
-            <div class="dropdown-menu text-break">
+  <!-- Change description modal -->
+  <ChangeDescriptionModal :cAddress="cAddress" :cDescription="cDescription" :mdAddress="mdAddress" @saveCollection="saveCollection" />
 
-              <span v-for="(option, index) in editImageOptions" :key="index" @click="editImageChoice = index" class="dropdown-item cursor-pointer">
-                {{ option.description }}
-              </span>
+  <!-- Change Metadata URL Modal -->
+  <ChangeNftTypeModal :mdAddress="mdAddress" :cType="cType" :cAddress="cAddress" @saveCollection="saveCollection" />
 
-            </div>
-          </div>
-
-          <div class="mt-3">
-            <p v-if="editImageChoice==0">
-              The "Static image URL" option means that all the NFTs in the collection have the same (static) image. The metadata is stored 
-              onchain (within the smart contract itself). Use this option if you want to add an image URL 
-              (not a metadata file).
-            </p>
-
-            <p v-if="editImageChoice==1">
-              The "Static metadata URL" option means that all the NFTs in the collection have the same (static) image and meta data. The 
-              metadata is stored offchain, usually on IPFS or on a centralized server. Use this option if you have a URL of 
-              a single metadata <strong>file</strong> (all NFTs have the same metadata and image).
-            </p>
-
-            <p v-if="editImageChoice==2">
-              The "Generative metadata URL (with .json)" option means that all the NFTs in the collection have a different image and 
-              different meta data. The metadata is stored offchain, usually on IPFS or on a centralized server. Use this option if you 
-              have a metadata <strong>folder</strong> URL with multiple metadata files in it, where these files HAVE a .json extension.
-            </p>
-
-            <p v-if="editImageChoice==3">
-              The "Generative metadata URL (without .json)" option means that all the NFTs in the collection have a different image and 
-              different meta data. The metadata is stored offchain, usually on IPFS or on a centralized server. Use this option if you 
-              have a metadata <strong>folder</strong> URL with multiple metadata files in it, where these files DO NOT HAVE a .json extension.
-            </p>
-          </div>
-
-          <div class="mt-4">
-            <label for="imageMetadataUrl" class="form-label">
-              <strong>
-                Enter 
-                <span v-if="editImageChoice==0">image URL:</span>
-                <span v-if="editImageChoice==1">metadata file URL:</span>
-                <span v-if="editImageChoice==2">metadata folder URL:</span>
-                <span v-if="editImageChoice==3">metadata folder URL:</span>
-              </strong>
-            </label>
-
-            <input v-model="editImageMetadataUrl" type="text" class="form-control" id="imageMetadataUrl">
-          </div>
-
-          <div class="mt-4" v-if="editImageChoice > 0">
-            <label for="collectionPreviewUrl" class="form-label">
-              <strong>
-                Change collection preview image (optional):
-              </strong>
-            </label>
-
-            <input v-model="editImagePreviewUrl" type="text" class="form-control" id="collectionPreviewUrl" aria-describedby="previewImageHelp">
-            <div id="previewImageHelp" class="form-text">This is a preview image for the whole collection, not for individual NFTs.</div>
-          </div>
-
-        </div>
-
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-
-          <button @click="updateMetadata" type="button" class="btn btn-primary" :disabled="!editImageMetadataUrl || waitingMetadata">
-            <span v-if="waitingMetadata" class="spinner-border spinner-border-sm mx-1" role="status" aria-hidden="true"></span>
-            Submit
-          </button>
-        </div>
-      </div>
-    </div>
-  </div>
+  <!-- Remove Image From Collection Modal -->
+  <RemoveImageFromCollectionModal :mdAddress="mdAddress" :cAddress="cAddress" />
 </template>
 
 <script>
@@ -233,8 +203,14 @@ import { useToast } from "vue-toastification/dist/index.mjs";
 import ChatFeed from "~/components/chat/ChatFeed.vue";
 import ConnectWalletButton from "~/components/ConnectWalletButton.vue";
 import WaitingToast from "~/components/WaitingToast";
+import AddImageToCollectionModal from "~/components/nft/collection/AddImageToCollectionModal";
+import ChangeCollectionPreviewModal from "~/components/nft/collection/ChangeCollectionPreviewModal";
+import ChangeDescriptionModal from "~/components/nft/collection/ChangeDescriptionModal";
+import ChangeNftTypeModal from "~/components/nft/collection/ChangeNftTypeModal";
+import RemoveImageFromCollectionModal from "~/components/nft/collection/RemoveImageFromCollectionModal";
 import { getDomainName } from '~/utils/domainUtils';
 import { fetchCollection, fetchUsername, storeCollection, storeUsername } from '~/utils/storageUtils';
+import { getTextWithoutBlankCharacters } from '~/utils/textUtils';
 
 export default {
   name: 'NftCollection',
@@ -248,29 +224,25 @@ export default {
       cImage: null,
       cName: null,
       cSupply: null,
-      editImageChoice: 0, // 0 = static image URL, 1 = static metadata URL, 2 = generative metadata URL, 3 = generative metadata URL without .json extension
-      editImageMetadataUrl: null,
-      editImageOptions: [
-        { description: "Static image URL (same for all NFTs)" },
-        { description: "Static metadata URL (same for all NFTs)" },
-        { description: "Generative metadata URL (with .json)" },
-        { description: "Generative metadata URL (without .json)" }
-      ],
-      editImagePreviewUrl: "", // important: should be empty string, not null
+      cType: 0,
       mdAddress: null,
       priceBuyWei: null,
       priceSellWei: null,
       userTokenId: null, // if user owns at least one NFT, this will be set to the first token ID that user owns
       waitingBuy: false,
       waitingData: false,
-      waitingMetadata: false,
       waitingSell: false,
     }
   },
 
   components: {
+    AddImageToCollectionModal,
+    ChangeCollectionPreviewModal,
+    ChangeDescriptionModal,
+    ChangeNftTypeModal,
     ChatFeed,
     ConnectWalletButton,
+    RemoveImageFromCollectionModal,
     WaitingToast
   },
 
@@ -283,14 +255,20 @@ export default {
   },
 
   computed: {
+    getUsernameOrFullAddress() {
+      if (this.cAuthorDomain) {
+        let cleanName = String(this.cAuthorDomain).replace(this.$config.tldName, "");
+        return getTextWithoutBlankCharacters(cleanName) + this.$config.tldName;
+      } else {
+        return this.cAuthorAddress;
+      }
+    },
+
     getUsernameOrShortAddress() {
       if (this.cAuthorAddress) {
         if (this.cAuthorDomain) {
-          if (this.cAuthorDomain.endsWith(this.$config.tldName)) {
-            return this.cAuthorDomain
-          } else {
-            return this.cAuthorDomain + this.$config.tldName;
-          }
+          let cleanName = String(this.cAuthorDomain).replace(this.$config.tldName, "");
+          return getTextWithoutBlankCharacters(cleanName) + this.$config.tldName;
         } else {
           return shortenAddress(this.cAuthorAddress);
         }
@@ -436,10 +414,15 @@ export default {
       }
     },
 
-    async getCollectionDetails() {
+    async getCollectionDetails(refresh=false) {
       this.waitingData = true;
 
       let collection = fetchCollection(window, this.cAddress);
+
+      if (refresh) {
+        console.log("Refreshing collection metadata...");
+        collection = null;
+      }
 
       // fetch provider from hardcoded RPCs
       let provider = this.$getFallbackProvider(this.$config.supportedChainId);
@@ -450,7 +433,6 @@ export default {
       }
 
       const nftInterface = new ethers.utils.Interface([
-        "function collectionPreview() public view returns (string memory)",
         "function getBurnPrice() public view returns (uint256)",
         "function getMintPrice() public view returns (uint256)",
         "function metadataAddress() public view returns (address)",
@@ -469,8 +451,9 @@ export default {
       }
 
       const metadataInterface = new ethers.utils.Interface([
-        "function descriptions(address) public view returns (string memory)",
-        "function names(address) public view returns (string memory)"
+        "function getCollectionDescription(address) public view returns (string memory)",
+        "function getCollectionMetadataType(address nftAddress_) external view returns (uint256)",
+        "function getCollectionPreviewImage(address) public view returns (string memory)"
       ]);
       
       const metadataContract = new ethers.Contract(this.mdAddress, metadataInterface, provider);
@@ -483,14 +466,21 @@ export default {
       if (collection?.image) {
         this.cImage = collection.image;
       } else {
-        this.cImage = await nftContract.collectionPreview();
+        this.cImage = await metadataContract.getCollectionPreviewImage(this.cAddress);
       }
 
       // get description
       if (collection?.description && collection.description !== "" && collection.description !== null) {
         this.cDescription = collection.description;
       } else {
-        this.cDescription = await metadataContract.descriptions(this.cAddress);
+        this.cDescription = await metadataContract.getCollectionDescription(this.cAddress);
+      }
+
+      // get type
+      if (collection?.type >= 0) {
+        this.cType = collection.type;
+      } else {
+        this.cType = Number(await metadataContract.getCollectionMetadataType(this.cAddress));
       }
 
       // get name
@@ -533,9 +523,39 @@ export default {
         description: this.cDescription,
         image: this.cImage,
         mdAddress: this.mdAddress,
-        name: this.cName
+        name: this.cName,
+        type: this.cType
       };
       
+      storeCollection(window, this.cAddress, collection);
+    },
+
+    saveCollection(newCollectionData) {
+
+      if (newCollectionData?.type) {
+        this.cType = newCollectionData.type;
+      }
+
+      if (newCollectionData?.description) {
+        this.cDescription = newCollectionData.description;
+      }
+      
+      if (newCollectionData?.image) {
+        this.cImage = newCollectionData.image;
+      }
+
+      // create collection object, JSON.stringify it and save it to session storage
+      const collection = {
+        address: this.cAddress,
+        authorAddress: this.cAuthorAddress,
+        authorDomain: this.cAuthorDomain,
+        description: this.cDescription,
+        image: this.cImage,
+        mdAddress: this.mdAddress,
+        name: this.cName,
+        type: this.cType
+      };
+
       storeCollection(window, this.cAddress, collection);
     },
 
@@ -617,108 +637,6 @@ export default {
         }
 
         this.waitingSell = false;
-      }
-    },
-
-    async updateMetadata() {
-      this.waitingMetadata = true;
-
-      const metadataInterface = new ethers.utils.Interface([
-        "function setMdTypeAndUrlOrImage(address nftAddress_, uint256 mdType_, string memory mdUrlOrImage_, string memory collectionImage_) external"
-      ]);
-      
-      const metadataContract = new ethers.Contract(this.mdAddress, metadataInterface, this.signer);
-
-      if (this.editImageChoice === 0) {
-        this.editImagePreviewUrl = this.editImageMetadataUrl;
-      }
-
-      if (this.editImagePreviewUrl === null) {
-        this.editImagePreviewUrl = "";
-      }
-
-      try {
-        const tx = await metadataContract.setMdTypeAndUrlOrImage(
-          this.cAddress,
-          this.editImageChoice,
-          this.editImageMetadataUrl,
-          this.editImagePreviewUrl
-        ); 
-
-        const toastWait = this.toast(
-          {
-            component: WaitingToast,
-            props: {
-              text: "Please wait for your transaction to confirm. Click on this notification to see transaction in the block explorer."
-            }
-          },
-          {
-            type: "info",
-            onClick: () => window.open(this.$config.blockExplorerBaseUrl+"/tx/"+tx.hash, '_blank').focus()
-          }
-        );
-
-        const receipt = await tx.wait();
-
-        if (receipt.status === 1) {
-          this.toast.dismiss(toastWait);
-
-          this.toast("You have updated the NFT image and/or metadata URL.", {
-            type: "success",
-            onClick: () => window.open(this.$config.blockExplorerBaseUrl+"/tx/"+tx.hash, '_blank').focus()
-          });
-
-          if (this.editImagePreviewUrl) {
-            this.cImage = this.editImagePreviewUrl;
-
-            // create collection object, JSON.stringify it and save it to session storage
-            const collection = {
-              address: this.cAddress,
-              authorAddress: this.cAuthorAddress,
-              authorDomain: this.cAuthorDomain,
-              description: this.cDescription,
-              image: this.cImage,
-              mdAddress: this.mdAddress,
-              name: this.cName
-            };
-
-            storeCollection(window, this.cAddress, collection);
-          }
-
-          this.editImageMetadataUrl = null;
-          this.editImagePreviewUrl = ""; // important: should be empty string, not null
-
-          // close the modal
-          document.getElementById('closeChangeImageModal').click();
-
-          this.waitingMetadata = false;
-        } else {
-          this.toast.dismiss(toastWait);
-          this.waitingMetadata = false;
-          this.toast("Transaction has failed.", {
-            type: "error",
-            onClick: () => window.open(this.$config.blockExplorerBaseUrl+"/tx/"+tx.hash, '_blank').focus()
-          });
-          console.log(receipt);
-        }
-      } catch (e) {
-        console.error(e);
-
-        try {
-          let extractMessage = e.message.split("reason=")[1];
-          extractMessage = extractMessage.split(", method=")[0];
-          extractMessage = extractMessage.replace('"', "");
-          extractMessage = extractMessage.replace('"', "");
-          extractMessage = extractMessage.replace('execution reverted:', "Error:");
-
-          console.log(extractMessage);
-          
-          this.toast(extractMessage, {type: "error"});
-        } catch (e) {
-          this.toast("Transaction has failed.", {type: "error"});
-        }
-
-        this.waitingMetadata = false;
       }
     },
   },

@@ -182,6 +182,7 @@ import MintedPostImage from '~/components/minted-posts/MintedPostImage.vue';
 import ChatQuote from "~/components/chat/ChatQuote.vue";
 import { findFirstCollectionUrl, findFirstUrl, imgParsing, imgWithoutExtensionParsing, urlParsing, youtubeParsing } from '~/utils/textUtils';
 import { fetchCollection, fetchUsername, storeCollection, storeUsername } from '~/utils/storageUtils';
+import { getTextWithoutBlankCharacters } from '~/utils/textUtils';
 
 export default {
   name: "ChatPost",
@@ -322,7 +323,7 @@ export default {
 
     showDomainOrAddressOrAnon() {
       if (this.authorDomain) {
-        return this.authorDomain;
+        return getTextWithoutBlankCharacters(this.authorDomain);
       } else if (this.post.creator_details.metadata) {
         return this.shortenAddress(this.post.creator_details.metadata.address);
       } else {

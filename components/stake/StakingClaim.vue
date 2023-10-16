@@ -37,9 +37,9 @@
     <h4 class="text-center">Stats</h4>
 
     <ul>
-      <li>Your stake: {{ getLessDecimals(stakeTokenBalance) }} {{ $config.lpTokenSymbol }} / {{ $config.stakeTokenSymbol }}</li>
+      <li>Your stake: {{ getLessDecimals(stakeTokenBalance) }} {{ $config.lpTokenSymbol }} ({{ $config.stakeTokenSymbol }} tokens)</li>
       <li>
-        Previous period rewards: {{ getLessDecimals(claimRewardsTotal) }} {{ $config.tokenSymbol }}
+        Previous period rewards (total): {{ getLessDecimals(claimRewardsTotal) }} {{ $config.tokenSymbol }}
 
         <i 
           class="bi bi-info-circle-fill" 
@@ -47,10 +47,8 @@
           data-bs-content="Claimable now. Note that this is a total number for all stakers together."
         ></i>
       </li>
-      <li>Current period start date: {{ lastPeriodDateTime }}</li>
-      <li>Period length: {{ periodLengthHumanReadable }}</li>
       <li>
-        This period rewards: {{ getLessDecimals(futureRewards) }} {{ $config.tokenSymbol }} 
+        Current period rewards (so far): {{ getLessDecimals(futureRewards) }} {{ $config.tokenSymbol }} 
 
         <i 
           class="bi bi-info-circle-fill" 
@@ -58,14 +56,26 @@
           data-bs-content="Accrued rewards so far for all stakers together. Not claimable yet. Will be claimable in the next period."
         ></i>
       </li>
-      <li>Min stake: {{ minDeposit }} {{ $config.lpTokenSymbol }}</li>
+      <li>Period length: {{ periodLengthHumanReadable }}</li>
+      <li>Current period start date: {{ lastPeriodDateTime }}</li>
+      
     </ul>
 
     <p>
       <small>
-        Important: Claim your rewards once per week otherwise they will be forfeited.
+        Important: Claim your rewards once per week, otherwise they will be forfeited.
       </small>
     </p>
+
+    <!-- START @TODO: check if needed 
+    <GenericNftDrop 
+      title="Claim the NFT for Early Stakers" 
+      description="Early stakers can claim this free commemorative NFT. One NFT per address. Hurry up, limited time only!"
+      :claimersData="claimers" 
+      merkleClaimerAddress="0x484cCFE329E4dbdB0C594d2401400D4Df3AaeDE9" 
+      nftImage="https://bafybeic3fpbvtqj6kqpu77vy56efkasgbaviguc3qm4jgy3dy7fuk7fire.ipfs.w3s.link/early-staker-nft-sgb-chat.png"
+    /> -->
+    <!-- // END @TODO: check if needed -->
   </div>
 </template>
 
@@ -76,6 +86,8 @@ import { useToast } from "vue-toastification/dist/index.mjs";
 import WaitingToast from "~/components/WaitingToast";
 import { useUserStore } from '~/store/user';
 import { getLessDecimals } from '~/utils/numberUtils';
+import GenericNftDrop from "~/components/merkle/genericNftDrop"; // @TODO: check if needed
+import earlyStakers from "~/assets/merkle/earlyStakers.json"; // @TODO: check if needed
 
 export default {
   name: 'StakingClaim',
@@ -87,8 +99,18 @@ export default {
 
   data() {
     return {
+      claimers: [],
       waiting: false
     }
+  },
+
+  components: {
+    GenericNftDrop, // @TODO: check if needed
+    WaitingToast
+  },
+
+  created() {
+    this.claimers = earlyStakers; // @TODO: check if needed
   },
 
   computed: {

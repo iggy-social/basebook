@@ -1,5 +1,5 @@
 <template>
-<button data-bs-toggle="modal" data-bs-target="#stickerModal" class="btn btn-outline-primary me-2 mt-2">
+<button data-bs-toggle="modal" data-bs-target="#stickerModal" class="btn btn-outline-primary me-2 mt-2 btn-sm">
   <i class="bi bi-stickies-fill"></i> 
   Sticker
 </button>

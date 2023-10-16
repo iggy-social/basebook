@@ -6,17 +6,10 @@
       </NuxtLink>
 
       <ul class="navbar-nav justify-content-end flex-grow-1">
-
-        <li class="nav-item">
-          <a class="nav-link cursor-pointer" href="https://zealy.io/c/basebook/questboard" target="_blank">
-            <i class="bi bi-fire"></i> Quests
-          </a>
-        </li>
-        
         <li v-if="!isActivated" class="nav-item">
           <ConnectWalletButton class="nav-link cursor-pointer" btnText="Connect wallet" />
         </li>
-        
+
         <li v-if="!isActivated" class="nav-item">
           <a class="nav-link cursor-pointer" href="https://id.basebook.xyz" target="_blank">Basebook ID <i class="bi bi-box-arrow-up-right ms-1"></i></a>
         </li>
@@ -41,9 +34,8 @@
           </a>
           <div class="dropdown-menu dropdown-menu-end">
             <NuxtLink class="dropdown-item cursor-pointer" to="/airdrop">Claim {{ $config.chatTokenSymbol }} airdrop</NuxtLink>
-            <NuxtLink class="dropdown-item cursor-pointer" to="/stake">Stake & earn weekly ETH rewards</NuxtLink>
+            <NuxtLink class="dropdown-item cursor-pointer" to="/stake">Stake & earn weekly {{ $config.tokenSymbol }} rewards</NuxtLink>
             <span class="dropdown-item cursor-pointer" @click="addToMetaMask">Add {{ $config.chatTokenSymbol }} to MetaMask</span>
-            <span class="dropdown-item cursor-pointer disabled">Stay tuned for more...</span>
           </div>
         </li>
 
@@ -69,6 +61,7 @@ import { useUserStore } from '~/store/user';
 import ConnectWalletButton from "~/components/ConnectWalletButton.vue";
 import SwitchChainButton from "~/components/SwitchChainButton.vue";
 import { addTokenToMetaMask } from '~/utils/tokenUtils';
+import { getTextWithoutBlankCharacters } from '~/utils/textUtils';
 
 export default {
   name: "Navbar",
@@ -81,7 +74,7 @@ export default {
   computed: {
     showDomainOrAddress() {
       if (this.userStore.getDefaultDomain) {
-        return this.userStore.getDefaultDomain;
+        return getTextWithoutBlankCharacters(this.userStore.getDefaultDomain);
       } else if (this.address) {
         return this.shortenAddress(this.address);
       }

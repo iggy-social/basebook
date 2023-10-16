@@ -41,6 +41,7 @@ import { shortenAddress } from 'vue-dapp';
 import ProfileImage from '../profile/ProfileImage.vue';
 import { getDomainName } from '~/utils/domainUtils';
 import { fetchUsername, storeUsername } from '~/utils/storageUtils';
+import { getTextWithoutBlankCharacters } from '~/utils/textUtils';
 
 export default {
   name: 'OrbisNotification',
@@ -138,7 +139,7 @@ export default {
         this.authorDomain = fetchUsername(window, this.authorAddress);
 
         if (this.authorDomain) {
-          return this.authorDomain;
+          return getTextWithoutBlankCharacters(this.authorDomain);
         } else {
           return shortenAddress(this.authorAddress);
         }

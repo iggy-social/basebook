@@ -38,7 +38,7 @@
             You own <span class="text-primary">{{ currentUserBalance }}</span> of these post NFTs
           </li>
           <li>
-            <a class="text-decoration-none" target="_blank" :href="$config.marketplaceNftItemUrl+getQueryId">
+            <a class="text-decoration-none" target="_blank" :href="$config.marketplacePostNftItemUrl+getQueryId">
               See it on NFT marketplace 
               <i class="bi bi-box-arrow-up-right"></i>
             </a>
@@ -54,7 +54,7 @@
     </div>
   
     <!-- orbis post which has been minted -->
-    <ChatPost v-if="post" :post="post" :showQuotedPost="true" />
+    <ChatPost v-if="post" :post="post" :showQuotedPost="true" :orbisContext="getOrbisContext" />
   </div>
 </template>
 
@@ -83,6 +83,14 @@ export default {
   },
 
   computed: {
+    getOrbisContext() {
+      if (this.$config.orbisTest) {
+        return this.$config.orbisTestContext;
+      } else {
+        return this.$config.orbisContext;
+      }
+    },
+    
     getPostAuthor() {
       if (this.post) {
         return this.post.creator_details.metadata.address;

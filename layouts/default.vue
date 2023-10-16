@@ -49,50 +49,66 @@
 
             <div class="card col-6 cursor-pointer wallet-img-wrapper" @click="connectMetaMask">
               <img src="@/assets/img/wallets/metamask.png" class="card-img-top card-img-wallet" alt="MetaMask">
+              <small class="text-center mb-3 text-muted">MetaMask</small>
             </div>
 
             <div class="card col-6 cursor-pointer wallet-img-wrapper" @click="connectMetaMask">
+              <img src="@/assets/img/wallets/rabby.png" class="card-img-top card-img-wallet" alt="Rabby">
+              <small class="text-center mb-3 text-muted">Rabby</small>
+            </div> 
+
+            <div class="card col-6 cursor-pointer wallet-img-wrapper" @click="connectMetaMask">
               <img src="@/assets/img/wallets/bifrost.png" class="card-img-top card-img-wallet" alt="Bifrost">
+              <small class="text-center mb-3 text-muted">Bifrost</small>
+            </div> 
+
+            <div class="card col-6 cursor-pointer wallet-img-wrapper" @click="connectMetaMask">
+              <img src="@/assets/img/wallets/zerion.png" class="card-img-top card-img-wallet" alt="Zerion">
+              <small class="text-center mb-3 text-muted">Zerion</small>
             </div> 
 
             <!--
             <div class="card col-6 cursor-pointer wallet-img-wrapper" @click="connectWalletConnect">
               <img src="@/assets/img/wallets/wc.png" class="card-img-top card-img-wallet" alt="Wallet Connect">
+              <small class="text-center mb-3 text-muted">Rabby</small>
             </div>
             -->
 
             <div class="card col-6 cursor-pointer wallet-img-wrapper" @click="connectCoinbase">
               <img src="@/assets/img/wallets/coinbase.png" class="card-img-top card-img-wallet" alt="Coinbase">
+              <small class="text-center mb-3 text-muted">Coinbase</small>
             </div>
 
             <div class="card col-6 cursor-pointer wallet-img-wrapper" @click="connectMetaMask">
-              <img src="@/assets/img/wallets/rabby.png" class="card-img-top card-img-wallet" alt="Rabby">
-            </div> 
-
-            <div class="card col-6 cursor-pointer wallet-img-wrapper" @click="connectMetaMask">
               <img src="@/assets/img/wallets/brave.png" class="card-img-top card-img-wallet" alt="Brave">
+              <small class="text-center mb-3 text-muted">Brave</small>
             </div>
 
             <!--
             <div class="card col-6 cursor-pointer wallet-img-wrapper" @click="connectWalletConnect">
               <img src="@/assets/img/wallets/minerva.png" class="card-img-top card-img-wallet" alt="Minerva">
+              <small class="text-center mb-3 text-muted">Minerva</small>
             </div>
 
             <div class="card col-6 cursor-pointer wallet-img-wrapper" @click="connectWalletConnect">
               <img src="@/assets/img/wallets/argent.png" class="card-img-top card-img-wallet" alt="Argent">
+              <small class="text-center mb-3 text-muted">Argent</small>
             </div>
 
             <div class="card col-6 cursor-pointer wallet-img-wrapper" @click="connectWalletConnect">
               <img src="@/assets/img/wallets/1inch.png" class="card-img-top card-img-wallet" alt="1inch">
+              <small class="text-center mb-3 text-muted">1inch</small>
             </div>
             -->
 
             <div class="card col-6 cursor-pointer wallet-img-wrapper" @click="connectMetaMask">
               <img src="@/assets/img/wallets/trust.png" class="card-img-top card-img-wallet" alt="Trust Wallet">
+              <small class="text-center mb-3 text-muted">Trust Wallet</small>
             </div>
 
             <div class="card col-6 cursor-pointer wallet-img-wrapper" @click="connectMetaMask">
               <img src="@/assets/img/wallets/imtoken.png" class="card-img-top card-img-wallet" alt="imToken">
+              <small class="text-center mb-3 text-muted">imToken</small>
             </div>
           </div>
         </div>
@@ -123,6 +139,7 @@ import NavbarMobile from "~/components/navbars/NavbarMobile.vue";
 import SidebarLeft from "~/components/sidebars/SidebarLeft.vue";
 import SidebarRight from "~/components/sidebars/SidebarRight.vue";
 import ChatSettingsModal from "~/components/ChatSettingsModal.vue";
+import { getActivityPoints } from '~/utils/balanceUtils';
 import { getDomainName } from '~/utils/domainUtils';
 import { storeUsername } from '~/utils/storageUtils';
 
@@ -148,17 +165,6 @@ export default {
   mounted() {
     this.isMounted = true;
 
-    // connect to wallet if user was connected before
-    if (!this.isActivated) {
-			if (localStorage.getItem("connected") == "metamask") {
-				this.connectMetaMask();
-			} else if (localStorage.getItem("connected") == "walletconnect") {
-				this.connectWalletConnect();
-			} else if (localStorage.getItem("connected") == "coinbase") {
-				this.connectCoinbase();
-			}
-		}
-
     // set color mode
     document.documentElement.setAttribute("data-bs-theme", this.siteStore.getColorMode);
 
@@ -181,6 +187,18 @@ export default {
 
     window.addEventListener('resize', this.onWidthChange);
 
+    // connect to wallet if user was connected before
+    if (!this.isActivated) {
+			if (localStorage.getItem("connected") == "metamask") {
+				this.connectMetaMask();
+			} else if (localStorage.getItem("connected") == "walletconnect") {
+				this.connectWalletConnect();
+			} else if (localStorage.getItem("connected") == "coinbase") {
+				this.connectCoinbase();
+			}
+		}
+
+    // enable popovers everywhere
     new bootstrap.Popover(document.body, {
       selector: "[data-bs-toggle='popover']",
     })
@@ -213,7 +231,8 @@ export default {
   },
 
   methods: {
-    getDomainName,
+    getActivityPoints,
+    getDomainName, // imported function from utils/domainUtils.js
 
     async connectCoinbase() {
 			await this.connectWith(this.coinbaseConnector);
@@ -232,6 +251,14 @@ export default {
 			localStorage.setItem("connected", "walletconnect"); // store in local storage to autoconnect next time
 			document.getElementById('closeConnectModal').click();
 		},
+
+    async fetchActivityPoints() {
+      if (this.$config.activityPointsAddress) {
+        const activityPoints = await this.getActivityPoints(this.address, this.signer);
+
+        this.userStore.setCurrentUserActivityPoints(activityPoints);
+      }
+    },
 
     async fetchChatTokenBalance() {
       if (this.$config.chatTokenAddress) {
@@ -308,14 +335,21 @@ export default {
     },
 
     async fetchUserDomain() {
-      if (this.chainId === this.$config.supportedChainId) {
-        let userDomain;
+      if (
+        this.chainId === this.$config.supportedChainId &&
+        this.address != this.userStore.getCurrentUserAddress
+      ) {
+        this.userStore.setCurrentUserAddress(this.address);
         
+        let userDomain;
+
         if (this.signer) {
           userDomain = await this.getDomainName(this.address, this.signer);
         } else {
           userDomain = await this.getDomainName(this.address);
         }
+
+        
 
         if (userDomain) {
           this.userStore.setDefaultDomain(userDomain+this.$config.tldName);
@@ -324,6 +358,7 @@ export default {
           this.userStore.setDefaultDomain(null);
         }
 
+        this.fetchActivityPoints();
         this.fetchChatTokenBalance();
       }
     },
@@ -348,7 +383,7 @@ export default {
       this.userStore.setDid(null);
       this.userStore.setDidParent(null);
       this.userStore.setOrbisImage(null);
-    }
+    },
   },
 
   setup() {
@@ -384,20 +419,18 @@ export default {
 
   watch: {
     address(newVal, oldVal) {
-      
       // if address changes, clear local & session storage (needs further testing)
       if (
         newVal.startsWith("0x") &&
         oldVal.startsWith("0x") &&
         String(newVal).toLowerCase() !== String(oldVal).toLowerCase()
       ) {
-        console.log("address changed");
         this.orbisLogout();
       }
 
       if (newVal) {
         this.fetchUserDomain();
-      } 
+      }
     },
 
     chainId(newVal, oldVal) {
@@ -408,7 +441,7 @@ export default {
 
     isActivated(newVal, oldVal) {
 			if (oldVal === true && newVal === false) { // if user disconnects, clear the local storage
-				console.log("user disconnected");
+        console.log("user disconnected");
         localStorage.setItem("connected", "");
         this.orbisLogout();
 			} else {
@@ -427,7 +460,7 @@ export default {
     orbisAddress(newVal, oldVal) {
       if (newVal && this.address) {
         if (String(newVal).toLowerCase() != String(this.address).toLowerCase()) {
-          console.log("Logging out of Orbis because the address in signed Orbis credentials does not match the current user's address.");
+          console.log("Logging out of Orbis because the address in signed Orbis credentials does not matched the current user's address.");
           this.orbisLogout();
         }
       }
