@@ -14,7 +14,7 @@
   </div>
 
   <div class="card-footer bg-light text-body-secondary text-center">
-    <a :href="$config.marketplacePostNftUrl" class="btn btn-outline-primary mb-3" target="_blank">
+    <a :href="$config.marketplacePostNftUrl" class="btn btn-primary mb-3" target="_blank">
       See all minted posts
       <i class="bi bi-box-arrow-up-right ms-1"></i>
     </a>

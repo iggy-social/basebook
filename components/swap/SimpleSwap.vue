@@ -97,13 +97,13 @@
     <div class="d-flex justify-content-center mt-4">
 
       <!-- Connect Wallet button -->
-      <ConnectWalletButton v-if="!isActivated" class="btn btn-outline-primary" btnText="Connect wallet" />
+      <ConnectWalletButton v-if="!isActivated" class="btn btn-primary" btnText="Connect wallet" />
 
       <!-- Disabled Swap tokens button (if not input amount is entered) -->
       <button
         v-if="isActivated && !inputTokenAmount"
         :disabled="true" 
-        class="btn btn-outline-primary" 
+        class="btn btn-primary" 
         type="button"
       >
         Swap tokens
@@ -112,7 +112,7 @@
       <!-- Approve token button -->
       <button
         v-if="isActivated && inputTokenAmount && inputAmountLessThanBalance && !bothTokensAreTheSame && allowanceTooLow && !unwrappingWrappedNativeCoin && !priceImpactTooHigh" 
-        class="btn btn-outline-primary" 
+        class="btn btn-primary" 
         type="button"
         data-bs-toggle="modal" 
         :data-bs-target="'#tokenApprovalModal'+swapId"
@@ -133,7 +133,7 @@
       <button
         v-if="isActivated && inputTokenAmount && inputAmountLessThanBalance && !bothTokensAreTheSame && !priceImpactTooHigh && !priceImpactTooHigh && (!allowanceTooLow || unwrappingWrappedNativeCoin)"
         :disabled="!inputToken || !outputToken || !inputTokenAmount || !outputTokenAmount || !isActivated || bothTokensAreTheSame || !inputAmountLessThanBalance" 
-        class="btn btn-outline-primary" 
+        class="btn btn-primary" 
         type="button"
         data-bs-toggle="modal" 
         :data-bs-target="'#swapTokensModal'+swapId"
@@ -158,7 +158,7 @@
       <button
         v-if="isActivated && inputTokenAmount && !inputAmountLessThanBalance && !bothTokensAreTheSame && !priceImpactTooHigh"
         :disabled="true" 
-        class="btn btn-outline-primary" 
+        class="btn btn-primary" 
         type="button"
       >
         Balance too low
@@ -168,7 +168,7 @@
       <button
         v-if="isActivated && inputTokenAmount && bothTokensAreTheSame && !priceImpactTooHigh"
         :disabled="true" 
-        class="btn btn-outline-primary" 
+        class="btn btn-primary" 
         type="button"
       >
         Both tokens are the same
@@ -178,7 +178,7 @@
       <button
         v-if="isActivated && inputTokenAmount && priceImpactTooHigh"
         :disabled="true" 
-        class="btn btn-outline-primary" 
+        class="btn btn-primary" 
         type="button"
       >
         Price impact too high
