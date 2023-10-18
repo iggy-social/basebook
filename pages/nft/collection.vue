@@ -107,7 +107,7 @@
             </p>
 
             <p class="me-4">
-              <i class="bi bi-box-arrow-up-right me-2"></i>
+              <i class="bi bi-box-arrow-up-right me-1"></i>
               <a :href="$config.marketplaceNftCollectionBaseUrl+cAddress" target="_blank" style="text-decoration: none;">
                 See on NFT marketplace
               </a>
@@ -433,6 +433,7 @@ export default {
       }
 
       const nftInterface = new ethers.utils.Interface([
+        "function collectionPreview() public view returns (string memory)", // OLD NFTs
         "function getBurnPrice() public view returns (uint256)",
         "function getMintPrice() public view returns (uint256)",
         "function metadataAddress() public view returns (address)",
@@ -453,7 +454,10 @@ export default {
       const metadataInterface = new ethers.utils.Interface([
         "function getCollectionDescription(address) public view returns (string memory)",
         "function getCollectionMetadataType(address nftAddress_) external view returns (uint256)",
-        "function getCollectionPreviewImage(address) public view returns (string memory)"
+        "function getCollectionPreviewImage(address) public view returns (string memory)",
+        "function descriptions(address) public view returns (string memory)", // OLD NFTs
+        "function mdTypes(address) public view returns (uint256)", // OLD NFTs
+      	"function names(address) public view returns (string memory)" // OLD NFTs
       ]);
       
       const metadataContract = new ethers.Contract(this.mdAddress, metadataInterface, provider);
@@ -466,21 +470,34 @@ export default {
       if (collection?.image) {
         this.cImage = collection.image;
       } else {
-        this.cImage = await metadataContract.getCollectionPreviewImage(this.cAddress);
+        try {
+          this.cImage = await metadataContract.getCollectionPreviewImage(this.cAddress);
+        } catch (e) {
+          this.cImage = await nftContract.collectionPreview();
+        }
       }
 
       // get description
       if (collection?.description && collection.description !== "" && collection.description !== null) {
         this.cDescription = collection.description;
       } else {
-        this.cDescription = await metadataContract.getCollectionDescription(this.cAddress);
+        try {
+          this.cDescription = await metadataContract.getCollectionDescription(this.cAddress);
+        } catch (e) {
+          this.cDescription = await metadataContract.descriptions(this.cAddress);
+        }
+        
       }
 
       // get type
       if (collection?.type >= 0) {
         this.cType = collection.type;
       } else {
-        this.cType = Number(await metadataContract.getCollectionMetadataType(this.cAddress));
+        try {
+          this.cType = await metadataContract.getCollectionMetadataType(this.cAddress);
+        } catch (e) {
+          this.cType = await metadataContract.mdTypes(this.cAddress);
+        }
       }
 
       // get name

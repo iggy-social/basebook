@@ -64,24 +64,24 @@ export default defineNuxtConfig({
       favicon: "/img/favicon.svg",
       getPostsLimit: 30, // number of posts to fetch from Orbis in the getPosts() function
       governanceUrl: "", // governance url (snapshot, Tally, etc.)
-      iggyPostAddress: "0x8032d7a2b57B3F46861b0A46cE43DEc8281471C5",
-      iggyPostMinterAddress: "0x3A5e015f3518f3A48820644231d186538606FF94",
-      iggyPostStatsAddress: "0xDA07Ef226E212f548979339BFEb13160C1d52f30",
+      iggyPostAddress: "0x06A7Ab7Bb68b0ad6eB7688C5781E60BE6AFc658d",
+      iggyPostMinterAddress: "0x5e54CebB2612744cB56547bC7CC41466ad7ac557",
+      iggyPostStatsAddress: "0xF40284a811c82b4B9ab22E94Bb909Df6d2c66C08",
       keysAddress: "", // FriendKeys contract address 
       keysContext: "",
       keysFeatured: ["tempe", "tekr"],
       linkPreviews: "netlify", // "netlify" or "microlink" (or leave empty for no link previews)
       lpTokenAddress: "", // liquidity pool token (token to stake in the staking contract)
       lpTokenSymbol: "LP tokens", // LP token symbol
-      marketplacePostNftUrl: "https://opensea.io/assets/base/0x8032d7a2b57B3F46861b0A46cE43DEc8281471C5",
-      marketplacePostNftItemUrl: "https://opensea.io/assets/base/0x8032d7a2b57B3F46861b0A46cE43DEc8281471C5/", // url (append nft id to it)
+      marketplacePostNftUrl: "https://opensea.io/assets/base/0x06A7Ab7Bb68b0ad6eB7688C5781E60BE6AFc658d",
+      marketplacePostNftItemUrl: "https://opensea.io/assets/base/0x06A7Ab7Bb68b0ad6eB7688C5781E60BE6AFc658d/", // url (append nft id to it)
       marketplaceNftCollectionBaseUrl: "https://opensea.io/assets/base/", // url (append nft address to it)
       maxImageUploadSizeMb: 1, // max image upload size in MB
       newsletterLink: "https://paragraph.xyz/@iggy?modal=subscribe",
       nftDefaultRatio: 1, // default ratio for the NFT price bonding curve
-      nftLaunchpadBondingAddress: "0xe7d4643aEB94117D9c2bc023aa28243264D448eE", // NFT launchpad with bonding curve contract address
+      nftLaunchpadBondingAddress: "0x6D738c53AD1dB7685CAca85302825aA9aCc33a62", // NFT launchpad with bonding curve contract address
       nftLaunchpadLatestItems: 8, // number of latest NFTs to show in the NFT launchpad
-      nftOrbisContext: "kjzl6cwe1jw145x3vl4u9xe2ymk7b9yeed5zj4rztha58vj2h7wiu7jg9sau018", // Orbis context for NFT collection pages
+      nftOrbisContext: "kjzl6cwe1jw148wq50ose4mjrt17aodei2xor9kbw72b3wzvgzu7wm3jlhaghd0", // Orbis context for NFT collection pages
       orbisCategories: [ // use only alphanumeric ASCII characters for slugs! (no spaces, only dash is allowed)
         { "slug": "all", "title": "All posts", "hidden": false }, // not a real tag, just denotes the absence of a tag (always keep it here)
         { "slug": "general", "title": "General discussion", "hidden": false },
@@ -94,7 +94,7 @@ export default defineNuxtConfig({
         { "slug": "music", "title": "Music", "hidden": true },
         { "slug": "random", "title": "Random", "hidden": false },
       ],
-      orbisContext: "kjzl6cwe1jw1491eu80t52tz6rqtxrt94jlekb6gwxm241zfxbf9apq7fqrhyv3", // production context
+      orbisContext: "kjzl6cwe1jw148wq50ose4mjrt17aodei2xor9kbw72b3wzvgzu7wm3jlhaghd0", // production context
       orbisTest: false, // if true, test context will be used instead of the production one
       orbisTestContext: "kjzl6cwe1jw145tfqv2eqv8tiz6puo27meyz4smz40atppuc13tulqca87k35z2", // test context
       previewImage: "/img/cover.png",
@@ -127,7 +127,7 @@ export default defineNuxtConfig({
         "randomMintedPosts": true, 
         "swap": true, 
         "stake": false, 
-        "sendTokens": false, 
+        "sendTokens": true, 
         "spotify": false
       }, 
       showRepliesOnHomepage: true, // show replies on the homepage  

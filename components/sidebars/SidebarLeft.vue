@@ -42,7 +42,7 @@
 
           <li class="nav-item p-1" @click="closeLeftSidebar">
             <NuxtLink class="nav-link" :class="$route.path === '/' ? 'active' : ''" aria-current="page" to="/">
-              <i class="bi bi-rocket-takeoff"></i> NFT Bookshelf
+              <i class="bi bi-house"></i> Home
             </NuxtLink>
           </li>
 
@@ -79,12 +79,13 @@
           </li>
           -->
           
-          <!-- Chat -->
+          <!-- Chat 
           <li class="nav-item p-1" @click="closeLeftSidebar">
             <NuxtLink class="nav-link" :class="$route.path.startsWith('/chat') ? 'active' : ''" aria-current="page" to="/chat">
               <i class="bi bi-chat-dots"></i> Chat
             </NuxtLink>
           </li>
+          -->
           
           <!-- Profile -->
           <li v-if="isActivated" class="nav-item p-1" @click="closeLeftSidebar">
@@ -93,7 +94,7 @@
             </NuxtLink>
           </li>
 
-          <!-- Notifications -->
+          <!-- Notifications 
           <li v-if="isActivated" class="nav-item p-1" @click="closeLeftSidebar">
             <NuxtLink class="nav-link" :class="$route.path.startsWith('/notifications') ? 'active' : ''" aria-current="page" to="/notifications">
               <i class="bi bi-bell"></i> Notifications
@@ -106,6 +107,7 @@
 
             </NuxtLink>
           </li>
+          -->
 
           <!-- Activity Points -->
           <li class="nav-item p-1" @click="closeLeftSidebar" v-if="$config.showFeatures.activityPoints && $config.activityPointsAddress">

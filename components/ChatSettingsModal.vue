@@ -8,10 +8,10 @@
       </div>
       <div class="modal-body">
 
-        <p><strong>Chat</strong></p>
+        <p v-if="false"><strong>Chat</strong></p>
 
         <!-- Show replies on home feed -->
-        <div class="form-check">
+        <div v-if="false" class="form-check">
           <input 
             class="form-check-input" 
             type="checkbox" 
@@ -25,7 +25,7 @@
           </label>
         </div>
 
-        <hr>
+        <hr v-if="false">
 
         <p><strong>Swap</strong></p>
 

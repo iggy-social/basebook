@@ -1,7 +1,7 @@
 <template>
   <div>
   <div class="card border">
-    <div class="card-body">
+    <div class="card-body mb-4">
       <p class="fs-3" @click="$router.back()">
         <i class="bi bi-arrow-left-circle cursor-pointer"></i>
       </p>
@@ -195,7 +195,7 @@
 
   </div>
 
-  <div class="card border mt-3 mb-3">
+  <div v-if="false" class="card border mt-3 mb-3">
     <div class="card-body">
 
       <!-- Tabs Navigation -->
