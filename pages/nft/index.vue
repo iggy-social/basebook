@@ -1,19 +1,15 @@
 <template>
 <Head>
-  <Title>{{ $config.projectMetadataTitle }}</Title>
-  <Meta name="description" :content="$config.projectDescription" />
-  <Link rel="icon" type="image/x-icon" :href="$config.favicon" />
+  <Title>NFT Launchpad | {{ $config.projectMetadataTitle }}</Title>
+  <Meta property="og:title" :content="'NFT Launchpad | ' + $config.projectMetadataTitle" />
 
-  <Meta property="og:title" :content="$config.projectMetadataTitle" />
-  <Meta property="og:description" :content="$config.projectDescription" />
-  <Meta property="og:image" :content="$config.projectUrl+$config.previewImage" />
+  <Meta name="description" :content="'Check out these awesome NFT collections on ' + $config.projectName + '!'" />
 
-  <Meta name="twitter:card" content="summary_large_image" />
-  <Meta name="twitter:site" :content="$config.projectTwitter" />
-  <Meta name="twitter:creator" :content="$config.projectTwitter" />
-  <Meta name="twitter:title" :content="$config.projectMetadataTitle" />
-  <Meta name="twitter:description" :content="$config.projectDescription" />
-  <Meta name="twitter:image" :content="$config.projectUrl+$config.previewImage" />
+  <Meta property="og:image" :content="$config.projectUrl+$config.previewImageNftLaunchpad" />
+  <Meta property="og:description" :content="'Check out these awesome NFT collections on ' + $config.projectName + '!'" />
+
+  <Meta name="twitter:image" :content="$config.projectUrl+$config.previewImageNftLaunchpad" />
+  <Meta name="twitter:description" :content="'Check out these awesome NFT collections on ' + $config.projectName + '!'" />
 </Head>
 
 <div class="card border scroll-500">
@@ -24,7 +20,7 @@
     </p>
 
     <h3 class="d-flex flex-row flex-wrap mt-3">
-      <div class="mb-3 me-auto">Discover and create social NFTs</div>
+      <div class="mb-3 me-auto">NFT Launchpad</div>
       
       <div class="mb-3">
         <NuxtLink class="btn btn-outline-primary btn-sm" to="/nft/create">
@@ -38,9 +34,8 @@
 
     <!-- NFT competition alert 
     <div class="alert alert-primary mb-3 text-center" role="alert">
-      <NuxtLink to="/post/?id=kjzl6cwe1jw1497vo0lfznf4yuds28lokeq7xlthc398xby2oe528oomobg1vfn">
-        Create your NFT and win a prize in the 2000 {{ $config.tokenSymbol }} reward pool! 
-        Hurry up, the competition takes place from 16 October to 20 October 2023!
+      <NuxtLink to="/post/?id=kjzl6cwe1jw149z0ddpcygc1nhgjdppg1zpr8r4s0j8siaq0bod6u0v5dyaqr2c">
+        Create your NFT and win a 2000 {{ $config.tokenSymbol }} prize! Hurry up, the competition ends on Friday, 29 September!
       </NuxtLink>
     </div>
     -->
@@ -171,6 +166,7 @@ export default {
 
       // create launchpad contract object
       const launchpadInterface = new ethers.utils.Interface([
+        "function getLastNftContracts(uint256 amount) external view returns(address[] memory)",
         "function getNftContracts(uint256 fromIndex, uint256 toIndex) external view returns(address[] memory)",
         "function getNftContractsArrayLength() external view returns(uint256)"
       ]);
@@ -182,11 +178,14 @@ export default {
       );
 
       // get all NFTs array length
-      if (this.allNftsArrayLength === 0) {
+      if (Number(this.allNftsArrayLength) === 0) {
         this.allNftsArrayLength = await launchpadContract.getNftContractsArrayLength();
       }
 
-      if (this.allNftsArrayLength > 0) {
+      if (Number(this.allNftsArrayLength) === 1) {
+        const lNfts = await launchpadContract.getLastNftContracts(1);
+        await this.parseNftsArray(lNfts, this.lastNfts, provider);
+      } else if (Number(this.allNftsArrayLength) > 1) {
         // set the start and end index, if end index is 0
         if (this.allNftsIndexEnd === 0) {
           this.allNftsIndexEnd = this.allNftsArrayLength - 1;

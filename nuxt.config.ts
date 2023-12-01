@@ -62,6 +62,9 @@ export default defineNuxtConfig({
       expiryCollections: 1000 * 60 * 60 * 24 * 7, // must be in milliseconds (0 means no expiration)
       expiryUsernames: 1000 * 60 * 60 * 24 * 7, // must be in milliseconds (0 means no expiration)
       favicon: "/img/favicon.svg",
+      fileUploadEnabled: true, // enable/disable file uploads (enable only if external file storage is used, e.g. IPFS via Spheron)
+      fileUploadSizeLimit: 1 * 1024 * 1024, // max file upload size in bytes (1 * 1024 * 1024 = 1 MB)
+      fileUploadTokenService: process.env.FILE_UPLOAD_SERVICE || "netlify", // "netlify" or "vercel" (or leave empty for no file uploads)
       getPostsLimit: 30, // number of posts to fetch from Orbis in the getPosts() function
       governanceUrl: "", // governance url (snapshot, Tally, etc.)
       iggyPostAddress: "0x06A7Ab7Bb68b0ad6eB7688C5781E60BE6AFc658d",
@@ -70,13 +73,12 @@ export default defineNuxtConfig({
       keysAddress: "", // FriendKeys contract address 
       keysContext: "",
       keysFeatured: ["tempe", "tekr"],
-      linkPreviews: "netlify", // "netlify" or "microlink" (or leave empty for no link previews)
+      linkPreviews: process.env.LINK_PREVIEW_SERVICE || "netlify", // "netlify", "vercel", or "microlink" (or leave empty for no link previews)
       lpTokenAddress: "", // liquidity pool token (token to stake in the staking contract)
       lpTokenSymbol: "LP tokens", // LP token symbol
       marketplacePostNftUrl: "https://opensea.io/assets/base/0x06A7Ab7Bb68b0ad6eB7688C5781E60BE6AFc658d",
       marketplacePostNftItemUrl: "https://opensea.io/assets/base/0x06A7Ab7Bb68b0ad6eB7688C5781E60BE6AFc658d/", // url (append nft id to it)
       marketplaceNftCollectionBaseUrl: "https://opensea.io/assets/base/", // url (append nft address to it)
-      maxImageUploadSizeMb: 1, // max image upload size in MB
       newsletterLink: "https://paragraph.xyz/@iggy?modal=subscribe",
       nftDefaultRatio: 1, // default ratio for the NFT price bonding curve
       nftLaunchpadBondingAddress: "0x6D738c53AD1dB7685CAca85302825aA9aCc33a62", // NFT launchpad with bonding curve contract address
@@ -142,8 +144,7 @@ export default defineNuxtConfig({
       tldName: ".basebook",
       tokenAddress: null, // leave null if it's a native token of the chain
       tokenDecimals: 18,
-      tokenSymbol: "ETH",
-      web3storageKey: process.env.WEB3_STORAGE_KEY || ""
+      tokenSymbol: "ETH"
     }
   },
   vite: {

@@ -56,7 +56,7 @@
               <img src="@/assets/img/wallets/rabby.png" class="card-img-top card-img-wallet" alt="Rabby">
               <small class="text-center mb-3 text-muted">Rabby</small>
             </div> 
-
+            
             <div class="card col-6 cursor-pointer wallet-img-wrapper" @click="connectMetaMask">
               <img src="@/assets/img/wallets/bifrost.png" class="card-img-top card-img-wallet" alt="Bifrost">
               <small class="text-center mb-3 text-muted">Bifrost</small>
@@ -116,6 +116,8 @@
     </div>
     <!-- END Connect Wallet modal -->
 
+    <VerifyAccountOwnership />
+
     <ChatSettingsModal />
 
   </div>
@@ -142,6 +144,7 @@ import ChatSettingsModal from "~/components/ChatSettingsModal.vue";
 import { getActivityPoints } from '~/utils/balanceUtils';
 import { getDomainName } from '~/utils/domainUtils';
 import { storeUsername } from '~/utils/storageUtils';
+import VerifyAccountOwnership from '~/components/VerifyAccountOwnership.vue';
 
 export default {
   data() {
@@ -159,7 +162,8 @@ export default {
     NavbarDesktop,
     NavbarMobile,
     SidebarLeft,
-    SidebarRight
+    SidebarRight,
+    VerifyAccountOwnership
   },
 
   mounted() {
@@ -202,6 +206,9 @@ export default {
     new bootstrap.Popover(document.body, {
       selector: "[data-bs-toggle='popover']",
     })
+
+    // check if file upload is enabled
+    this.siteStore.setFileUploadEnabled(this.$config.fileUploadEnabled);
   },
 
   unmounted() {
