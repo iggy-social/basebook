@@ -102,6 +102,14 @@
           </div>
         
         </div>
+
+        <div class="d-flex mt-2 row">
+          <img 
+            v-for="imgLink in getAllImagesFromText(postText)" 
+            :src="imgLink" 
+            class="img-fluid img-thumbnail m-1 col-2" 
+          />
+        </div>
       </div>
     </div>
 
@@ -161,7 +169,7 @@ import SwitchChainButton from "~/components/SwitchChainButton.vue";
 import TenorGifSearch from "~/components/tenor/TenorGifSearch.vue";
 import TenorStickerSearch from "~/components/tenor/TenorStickerSearch.vue";
 import FileUploadModal from "~/components/storage/FileUploadModal.vue";
-
+import { getAllImagesFromText } from "~/utils/textUtils";
 import EmojiPicker from '~/components/EmojiPicker.vue'
 import 'emoji-mart-vue-fast/css/emoji-mart.css'
 
